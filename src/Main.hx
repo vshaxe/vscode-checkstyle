@@ -14,12 +14,21 @@ class Main {
     }
 
     function check() {
-        var fileName = Vscode.window.activeTextEditor.document.fileName;
+        doCheck(Vscode.window.activeTextEditor.document.fileName);
+    }
 
+    function clearDecorations() {
+        for (decoration in VSCodeReporter.decorations) {
+            decoration.dispose();
+        }
+
+        VSCodeReporter.decorations = [];
     }
 
     @:access(checkstyle)
     function doCheck(fileName:String) {
+        clearDecorations();
+
         var checker = new checkstyle.Main();
         checker.addAllChecks();
         var file:Array<checkstyle.CheckFile> = [{ name: fileName, content: null, index: 0 }];
