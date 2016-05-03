@@ -19,7 +19,7 @@ class Main {
     }
 
     @:access(checkstyle)
-    private function doCheck(fileName:String) {
+    function doCheck(fileName:String) {
         var checker = new checkstyle.Main();
         checker.addAllChecks();
         var file:Array<checkstyle.CheckFile> = [{ name: fileName, content: null, index: 0 }];
