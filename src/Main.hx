@@ -49,14 +49,12 @@ class Main {
         diagnostics.set(vscode.Uri.file(fileName), reporter.diagnostics);
     }
 
-    function onDidSaveTextDocument(event:TextDocument):Dynamic {
+    function onDidSaveTextDocument(event:TextDocument) {
         check(event);
-        return null;
     }
 
-    function onDidOpenTextDocument(event:TextDocument):Dynamic {
+    function onDidOpenTextDocument(event:TextDocument) {
         check(event);
-        return null;
     }
 
     @:keep
