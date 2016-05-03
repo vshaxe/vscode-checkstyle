@@ -303,7 +303,7 @@ extern class Disposable {
 	function new(callOnDispose:haxe.Constraints.Function):Void;
 	function dispose():Dynamic;
 }
-typedef Event<T> = { };
+typedef Event<T> = (T->Void)->?Dynamic->?Array<Disposable>->Disposable;
 extern class EventEmitter<T> {
 	var event : Event<T>;
 	function fire(?data:T):Void;
