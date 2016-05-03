@@ -17,21 +17,22 @@ class Main {
     }
 
     @:access(checkstyle)
-    function check(fileName:String) {
-        if (!sys.FileSystem.exists(fileName)) {
+    function check(event:TextDocument) {
+        var fileName = event.fileName;
+
+        if (event.languageId != "haxe" || !sys.FileSystem.exists(fileName)) {
             return;
         }
+
         var checker = new checkstyle.Main();
 
         var configuration = Vscode.workspace.getConfiguration("haxecheckstyle");
         if (configuration.has(CONFIG_OPTION) && configuration.get(CONFIG_OPTION) != "") {
             try {
                 checker.configPath = Path.join([Vscode.workspace.rootPath, configuration.get(CONFIG_OPTION)]);
-                trace(checker.configPath);
                 checker.loadConfig(checker.configPath);
             }
             catch (e:Dynamic) {
-                trace(e);
                 checker.configPath = null;
             }
         }
@@ -49,12 +50,12 @@ class Main {
     }
 
     function onDidSaveTextDocument(event:TextDocument):Dynamic {
-        check(event.fileName);
+        check(event);
         return null;
     }
 
     function onDidOpenTextDocument(event:TextDocument):Dynamic {
-        check(event.fileName);
+        check(event);
         return null;
     }
 
