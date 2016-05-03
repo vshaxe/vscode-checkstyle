@@ -9,17 +9,12 @@ class Main {
     function new(ctx) {
         context = ctx;
         diagnostics = Vscode.languages.createDiagnosticCollection("checkstyle");
-        context.subscriptions.push(Vscode.commands.registerCommand("haxecheckstyle.check", check));
         Vscode.workspace.onDidSaveTextDocument(onDidSaveTextDocument);
         Vscode.workspace.onDidOpenTextDocument(onDidOpenTextDocument);
     }
 
-    function check() {
-        doCheck(Vscode.window.activeTextEditor.document.fileName);
-    }
-
     @:access(checkstyle)
-    function doCheck(fileName:String) {
+    function check(fileName:String) {
         if (!sys.FileSystem.exists(fileName)) {
             return;
         }
@@ -33,12 +28,12 @@ class Main {
     }
 
     function onDidSaveTextDocument(event:TextDocument):Dynamic {
-        doCheck(event.fileName);
+        check(event.fileName);
         return null;
     }
 
     function onDidOpenTextDocument(event:TextDocument):Dynamic {
-        doCheck(event.fileName);
+        check(event.fileName);
         return null;
     }
 

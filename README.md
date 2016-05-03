@@ -2,13 +2,11 @@
 
 ## Implemented
 
-* Command to check the style of the current file
-* Display the results on the file
+* Run haxe-checkstyle when documents are opened or saved
+* Display results as VS Code diagnostics
 
 ## TODO
 
-* Better style
-* Check on save
 * Check on all the workspace
 * Configure haxe-style
 * Actions to fix the errors found

@@ -14,14 +14,6 @@
         "haxe"
     ],
     "main": "main.js",
-    "contributes": {
-        "commands": [
-            {
-                "command": "haxecheckstyle.check",
-                "title": "Check the style of the Haxe file"
-            }
-        ]
-    },
     "activationEvents": [
         "onLanguage:haxe",
         "onCommand:haxecheckstyle.check"
