@@ -1,5 +1,6 @@
 # extension
 -lib hxnodejs
+-cp vscode-extern
 -cp src
 -js main.js
 Main

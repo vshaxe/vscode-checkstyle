@@ -1,11 +1,14 @@
 import checkstyle.CheckMessage;
 import checkstyle.reporter.BaseReporter;
+import vscode.DecorationOptions;
+import vscode.OverviewRulerLane;
+import vscode.Range;
 
 class VSCodeReporter extends BaseReporter {
 
     override public function addMessage(m:CheckMessage) {
-        var option:Vscode.DecorationOptions = {
-            range: new Vscode.Range(m.line-1, m.startColumn, m.line-1, m.endColumn),
+        var option:DecorationOptions = {
+            range: new Range(m.line-1, m.startColumn, m.line-1, m.endColumn),
             hoverMessage: m.message
         };
 
@@ -13,7 +16,7 @@ class VSCodeReporter extends BaseReporter {
             borderWidth: '1px',
             borderStyle: 'solid',
             overviewRulerColor: 'orange',
-            overviewRulerLane: Vscode.OverviewRulerLane.Full,
+            overviewRulerLane: OverviewRulerLane.Full,
             borderColor: 'orange'
         });
 

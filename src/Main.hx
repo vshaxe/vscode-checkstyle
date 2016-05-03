@@ -1,4 +1,5 @@
-import Vscode;
+import vscode.ExtensionContext;
+import vscode.TextDocument;
 
 using StringTools;
 
@@ -18,7 +19,7 @@ class Main {
     }
 
     @:access(checkstyle)
-    function doCheck(fileName:String) {
+    private function doCheck(fileName:String) {
         var checker = new checkstyle.Main();
         checker.addAllChecks();
         var file:Array<checkstyle.CheckFile> = [{ name: fileName, content: null, index: 0 }];
@@ -27,12 +28,14 @@ class Main {
         checker.checker.process(file, checker.excludesMap);
     }
 
-    function onDidSaveTextDocument(event:TextDocument) {
+    function onDidSaveTextDocument(event:TextDocument):Dynamic {
         doCheck(event.fileName);
+        return null;
     }
 
-    function onDidOpenTextDocument(event:TextDocument) {
+    function onDidOpenTextDocument(event:TextDocument):Dynamic {
         doCheck(event.fileName);
+        return null;
     }
 
     @:keep
