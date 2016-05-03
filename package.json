@@ -14,6 +14,18 @@
         "haxe"
     ],
     "main": "main.js",
+    "contributes": {
+        "configuration": {
+            "title": "Haxe checkstyle configuration",
+            "properties": {
+                "haxecheckstyle.configurationFile": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Configuration file for the code style check"
+                }
+            }
+        }
+    },
     "activationEvents": [
         "onLanguage:haxe",
         "onCommand:haxecheckstyle.check"
