@@ -8,17 +8,26 @@ class Main {
     function new(ctx) {
         context = ctx;
         context.subscriptions.push(Vscode.commands.registerCommand("haxecheckstyle.check", check));
+        Vscode.workspace.onDidSaveTextDocument(onDidSaveTextDocument);
+    }
+
+    function check() {
+        var fileName = Vscode.window.activeTextEditor.document.fileName;
+
     }
 
     @:access(checkstyle)
-    function check() {
-        var fileName = Vscode.window.activeTextEditor.document.fileName;
+    function doCheck(fileName:String) {
         var checker = new checkstyle.Main();
         checker.addAllChecks();
         var file:Array<checkstyle.CheckFile> = [{ name: fileName, content: null, index: 0 }];
         var reporter = new VSCodeReporter(1, checker.getCheckCount(), checker.checker.checks.length, null, false);
         checker.checker.addReporter(reporter);
         checker.checker.process(file, checker.excludesMap);
+    }
+
+    function onDidSaveTextDocument(event:TextDocument) {
+        doCheck(event.fileName);
     }
 
     @:keep
