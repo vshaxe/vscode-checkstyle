@@ -1,0 +1,3 @@
+[submodule "lib/checkstyle"]
+	path = lib/checkstyle
+	url = git@github.com:HaxeCheckstyle/haxe-checkstyle.git

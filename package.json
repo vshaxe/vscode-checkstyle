@@ -1,0 +1,32 @@
+{
+    "name": "haxe-checkstyle",
+    "version": "0.0.1",
+    "publisher": "ibilon",
+    "engines": {
+        "vscode": "^1.0.0"
+    },
+    "license": "MIT",
+    "description": "Linter for Haxe files",
+    "categories": [
+        "Linters"
+    ],
+    "keywords": [
+        "haxe"
+    ],
+    "main": "main.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "haxecheckstyle.check",
+                "title": "Check the style of the Haxe file"
+            }
+        ]
+    },
+    "activationEvents": [
+        "onLanguage:haxe",
+        "onCommand:haxecheckstyle.check"
+    ],
+    "scripts": {
+        "vscode:prepublish": "haxe build.hxml"
+    }
+}
