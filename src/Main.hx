@@ -9,6 +9,7 @@ class Main {
         context = ctx;
         context.subscriptions.push(Vscode.commands.registerCommand("haxecheckstyle.check", check));
         Vscode.workspace.onDidSaveTextDocument(onDidSaveTextDocument);
+        Vscode.workspace.onDidOpenTextDocument(onDidOpenTextDocument);
     }
 
     function check() {
@@ -27,6 +28,10 @@ class Main {
     }
 
     function onDidSaveTextDocument(event:TextDocument) {
+        doCheck(event.fileName);
+    }
+
+    function onDidOpenTextDocument(event:TextDocument) {
         doCheck(event.fileName);
     }
 
