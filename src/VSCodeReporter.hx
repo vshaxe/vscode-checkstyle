@@ -8,6 +8,8 @@ class VSCodeReporter extends BaseReporter {
 
     override public function addMessage(m:CheckMessage) {
         var range = new Range(m.line - 1, m.startColumn, m.line - 1, m.endColumn);
-        diagnostics.push(new Diagnostic(range, m.message, Information));
+        var diag = new Diagnostic(range, m.message, Information);
+        diag.source = "checkstyle";
+        diagnostics.push(diag);
     }
 }

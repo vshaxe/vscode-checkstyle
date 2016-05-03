@@ -20,6 +20,9 @@ class Main {
 
     @:access(checkstyle)
     function doCheck(fileName:String) {
+        if (!sys.FileSystem.exists(fileName)) {
+            return;
+        }
         var checker = new checkstyle.Main();
         checker.addAllChecks();
         var file:Array<checkstyle.CheckFile> = [{ name: fileName, content: null, index: 0 }];
