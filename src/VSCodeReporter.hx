@@ -1,31 +1,13 @@
 import checkstyle.CheckMessage;
 import checkstyle.reporter.BaseReporter;
-import vscode.DecorationOptions;
-import vscode.TextEditorDecorationType;
-import vscode.OverviewRulerLane;
 import vscode.Range;
+import vscode.Diagnostic;
 
 class VSCodeReporter extends BaseReporter {
-
-    public static var decorations:Array<TextEditorDecorationType> = [];
+    public var diagnostics:Array<Diagnostic> = [];
 
     override public function addMessage(m:CheckMessage) {
-        var option:DecorationOptions = {
-            range: new Range(m.line-1, m.startColumn, m.line-1, m.endColumn),
-            hoverMessage: m.message
-        };
-
-        var decoration = Vscode.window.createTextEditorDecorationType({
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            overviewRulerColor: 'orange',
-            overviewRulerLane: OverviewRulerLane.Full,
-            borderColor: 'orange'
-        });
-
-        decorations.push(decoration);
-
-        Vscode.window.activeTextEditor.setDecorations(decoration, [option]);
+        var range = new Range(m.line - 1, m.startColumn, m.line - 1, m.endColumn);
+        diagnostics.push(new Diagnostic(range, m.message, Information));
     }
-
 }
