@@ -6,7 +6,7 @@
 Main
 
 # checkstyle
--lib haxeparser:3.2.0
+-lib haxeparser:3.3.0
 -lib compiletime:2.6.0
 -lib hxargs
 -lib checkstyle
