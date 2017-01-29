@@ -10,6 +10,7 @@
     "categories": [
         "Linters"
     ],
+    "icon": "logo.png",
     "keywords": [
         "haxe"
     ],
