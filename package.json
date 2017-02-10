@@ -1,5 +1,6 @@
 {
     "name": "haxe-checkstyle",
+    "displayName": "Haxe Checkstyle",
     "version": "0.0.1",
     "publisher": "ibilon",
     "engines": {
