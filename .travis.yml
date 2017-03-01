@@ -1,0 +1,16 @@
+language: haxe
+sudo: false
+haxe:
+ - development
+
+install:
+ - haxelib install hxnodejs
+ - haxelib install vscode
+ - haxelib install jstack
+ - haxelib install haxeparser 3.3.0
+ - haxelib install compiletime 2.6.0
+ - haxelib install hxargs
+ - haxelib install checkstyle
+
+script:
+ - haxe build.hxml
