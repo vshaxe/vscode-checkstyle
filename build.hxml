@@ -1,8 +1,11 @@
 # extension
 -lib hxnodejs
+-lib jstack
+-D JSTACK_MAIN=Main.main
 -cp vscode-extern
 -cp src
 -js main.js
+-debug
 Main
 
 # checkstyle
