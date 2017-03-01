@@ -15,7 +15,7 @@
     "keywords": [
         "haxe"
     ],
-    "main": "main.js",
+    "main": "bin/main.js",
     "contributes": {
         "configuration": {
             "title": "Haxe checkstyle configuration",
