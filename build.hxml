@@ -1,8 +1,8 @@
 # extension
 -lib hxnodejs
+-lib vscode
 -lib jstack
 -D JSTACK_MAIN=Main.main
--cp vscode-extern
 -cp src
 -js bin/main.js
 -debug
