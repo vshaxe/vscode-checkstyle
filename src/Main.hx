@@ -29,7 +29,12 @@ class Main {
         var configuration = Vscode.workspace.getConfiguration("haxecheckstyle");
         if (configuration.has(CONFIG_OPTION) && configuration.get(CONFIG_OPTION) != "") {
             try {
-                checker.configPath = Path.join([Vscode.workspace.rootPath, configuration.get(CONFIG_OPTION)]);
+                var file = configuration.get(CONFIG_OPTION);
+                if (sys.FileSystem.exists(file)) {
+                    checker.configPath = file;
+                } else {
+                    checker.configPath = Path.join([Vscode.workspace.rootPath, file]);
+                }
                 checker.loadConfig(checker.configPath);
             }
             catch (e:Dynamic) {
