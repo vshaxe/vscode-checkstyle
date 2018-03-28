@@ -1,7 +1,7 @@
 language: haxe
 sudo: false
 haxe:
- - development
+ - 3.4.7
 
 install:
  - haxelib install hxnodejs
