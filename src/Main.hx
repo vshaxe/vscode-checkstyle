@@ -1,3 +1,4 @@
+import checkstyle.reporter.ReporterManager;
 import haxe.io.Path;
 import vscode.ExtensionContext;
 import vscode.TextDocument;
@@ -48,7 +49,8 @@ class Main {
 
         var file:Array<checkstyle.CheckFile> = [{ name: fileName, content: null, index: 0 }];
         var reporter = new VSCodeReporter(1, checker.getCheckCount(), checker.checker.checks.length, null, false);
-        checker.checker.addReporter(reporter);
+        ReporterManager.INSTANCE.clear();
+        ReporterManager.INSTANCE.addReporter(reporter);
 
         checker.checker.process(file, checker.excludesMap);
         diagnostics.set(vscode.Uri.file(fileName), reporter.diagnostics);
