@@ -1,4 +1,5 @@
 import checkstyle.reporter.ReporterManager;
+import checkstyle.Config;
 import haxe.io.Path;
 import vscode.ExtensionContext;
 import vscode.TextDocument;
@@ -44,7 +45,14 @@ class Main {
         }
 
         if (checker.configPath == null) {
-            checker.addAllChecks();
+            // TODO make it a configuration option with a default config, so people can use checkstyle without checkstyle.json file
+            var config:Config = CompileTime.parseJsonFile("checkstyle.json");
+            try {
+                checker.parseAndValidateConfig(config);
+            }
+            catch (e:Dynamic) {
+                checker.addAllChecks();
+            }
         }
 
         var file:Array<checkstyle.CheckFile> = [{ name: fileName, content: null, index: 0 }];
