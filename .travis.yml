@@ -10,7 +10,7 @@ install:
  - haxelib install haxeparser 3.3.0
  - haxelib install compiletime 2.6.0
  - haxelib install hxargs
- - haxelib install checkstyle
+ - haxelib git checkstyle https://github.com/HaxeCheckstyle/haxe-checkstyle
 
 script:
  - haxe build.hxml
