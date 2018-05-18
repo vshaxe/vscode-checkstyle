@@ -1,5 +1,6 @@
 import checkstyle.reporter.ReporterManager;
-import checkstyle.Config;
+import checkstyle.config.Config;
+import checkstyle.config.ConfigParser;
 import haxe.io.Path;
 import vscode.ExtensionContext;
 import vscode.TextDocument;
@@ -7,6 +8,7 @@ import vscode.DiagnosticCollection;
 
 class Main {
     static inline var CONFIG_OPTION = "configurationFile";
+    static inline var SOURCE_FOLDERS = "sourceFolders";
 
     var context:ExtensionContext;
     var diagnostics:DiagnosticCollection;
@@ -21,12 +23,21 @@ class Main {
     @:access(checkstyle)
     function check(event:TextDocument) {
         var fileName = event.fileName;
-
         if (event.languageId != "haxe" || !sys.FileSystem.exists(fileName)) {
             return;
         }
 
+        var rootFolder = determineRootFolder(fileName);
+        if (rootFolder == null) {
+            return;
+        }
+
         var checker = new checkstyle.Main();
+        addSourcePaths(checker.configParser);
+
+        if (!fileInSourcePaths(fileName, rootFolder, checker.configParser.paths)) {
+            return;
+        }
 
         var configuration = Vscode.workspace.getConfiguration("haxecheckstyle");
         if (configuration.has(CONFIG_OPTION) && configuration.get(CONFIG_OPTION) != "") {
@@ -35,9 +46,9 @@ class Main {
                 if (sys.FileSystem.exists(file)) {
                     checker.configPath = file;
                 } else {
-                    checker.configPath = Path.join([Vscode.workspace.rootPath, file]);
+                    checker.configPath = Path.join([rootFolder, file]);
                 }
-                checker.loadConfig(checker.configPath);
+                checker.configParser.loadConfig(checker.configPath);
             }
             catch (e:Dynamic) {
                 checker.configPath = null;
@@ -48,20 +59,57 @@ class Main {
             // TODO make it a configuration option with a default config, so people can use checkstyle without checkstyle.json file
             var config:Config = CompileTime.parseJsonFile("checkstyle.json");
             try {
-                checker.parseAndValidateConfig(config);
+                checker.configParser.parseAndValidateConfig(config, rootFolder);
             }
             catch (e:Dynamic) {
-                checker.addAllChecks();
+                checker.configParser.addAllChecks();
             }
         }
 
         var file:Array<checkstyle.CheckFile> = [{ name: fileName, content: null, index: 0 }];
-        var reporter = new VSCodeReporter(1, checker.getCheckCount(), checker.checker.checks.length, null, false);
+        var reporter = new VSCodeReporter(1, checker.configParser.getCheckCount(), checker.checker.checks.length, null, false);
         ReporterManager.INSTANCE.clear();
         ReporterManager.INSTANCE.addReporter(reporter);
 
-        checker.checker.process(file, checker.excludesMap);
+        checker.checker.process(file, checker.configParser.excludesMap);
         diagnostics.set(vscode.Uri.file(fileName), reporter.diagnostics);
+    }
+
+    function determineRootFolder(fileName:String):String {
+        if (Vscode.workspace.workspaceFolders == null) {
+            return null;
+        }
+        for (i in 0...Vscode.workspace.workspaceFolders.length) {
+            var workspaceFolder = Vscode.workspace.workspaceFolders[i];
+            if (StringTools.startsWith(fileName, workspaceFolder.uri.fsPath)) {
+                return workspaceFolder.uri.fsPath;
+            }
+        }
+        return null;
+    }
+
+    function addSourcePaths(configParser:ConfigParser) {
+        var configuration = Vscode.workspace.getConfiguration("haxecheckstyle");
+        if (!configuration.has(SOURCE_FOLDERS)) {
+            return;
+        }
+        var folders:Array<String> = configuration.get(SOURCE_FOLDERS);
+        if (folders == null) {
+            return;
+        }
+        for (folder in folders) {
+            configParser.paths.push(folder);
+        }
+    }
+
+    function fileInSourcePaths(fileName:String, rootFolder:String, paths:Array<String>):Bool {
+        for (path in paths) {
+            var rootPath = Path.join([rootFolder, path]);
+            if (StringTools.startsWith(fileName, rootPath)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function onDidSaveTextDocument(event:TextDocument) {

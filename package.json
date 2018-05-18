@@ -24,6 +24,14 @@
                     "type": "string",
                     "default": "",
                     "description": "Configuration file for the code style check"
+                },
+                "haxecheckstyle.sourceFolders": {
+                    "type": "array",
+                    "default": [
+                        "src",
+                        "Source"
+                    ],
+                    "description": "Source folders for code style check"
                 }
             }
         }
