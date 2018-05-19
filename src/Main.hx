@@ -12,10 +12,15 @@ class Main {
 
     var context:ExtensionContext;
     var diagnostics:DiagnosticCollection;
+    var codeActions:CheckstyleCodeActions;
 
     function new(ctx) {
         context = ctx;
         diagnostics = Vscode.languages.createDiagnosticCollection("checkstyle");
+
+        codeActions = new CheckstyleCodeActions();
+        Vscode.languages.registerCodeActionsProvider("haxe", {provideCodeActions:codeActions.provideCodeActions});
+
         Vscode.workspace.onDidSaveTextDocument(onDidSaveTextDocument);
         Vscode.workspace.onDidOpenTextDocument(onDidOpenTextDocument);
     }
