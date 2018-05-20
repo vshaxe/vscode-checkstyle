@@ -29,7 +29,7 @@
                     "type": "array",
                     "default": [
                         "src",
-                        "Source"
+                        "source"
                     ],
                     "description": "Source folders for code style check"
                 }

@@ -103,13 +103,22 @@ class Main {
     }
 
     function fileInSourcePaths(fileName:String, rootFolder:String, paths:Array<String>):Bool {
+        fileName = normalizePath(fileName);
         for (path in paths) {
-            var rootPath = Path.join([rootFolder, path]);
+            var rootPath = normalizePath(Path.join([rootFolder, path]));
             if (StringTools.startsWith(fileName, rootPath)) {
                 return true;
             }
         }
         return false;
+    }
+
+    function normalizePath(path:String):String {
+        path = Path.normalize(path);
+        if (Sys.systemName() == "Windows") {
+            path = path.toLowerCase();
+        }
+        return path;
     }
 
     function onDidSaveTextDocument(event:TextDocument) {
