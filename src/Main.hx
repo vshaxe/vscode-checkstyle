@@ -16,8 +16,11 @@ class Main {
     function new(ctx) {
         context = ctx;
         diagnostics = Vscode.languages.createDiagnosticCollection("checkstyle");
-        Vscode.workspace.onDidSaveTextDocument(onDidSaveTextDocument);
-        Vscode.workspace.onDidOpenTextDocument(onDidOpenTextDocument);
+        Vscode.workspace.onDidSaveTextDocument(check);
+        Vscode.workspace.onDidOpenTextDocument(check);
+        for (editor in Vscode.window.visibleTextEditors) {
+            check(editor.document);
+        }
     }
 
     @:access(checkstyle)
@@ -119,14 +122,6 @@ class Main {
             path = path.toLowerCase();
         }
         return path;
-    }
-
-    function onDidSaveTextDocument(event:TextDocument) {
-        check(event);
-    }
-
-    function onDidOpenTextDocument(event:TextDocument) {
-        check(event);
     }
 
     @:keep
