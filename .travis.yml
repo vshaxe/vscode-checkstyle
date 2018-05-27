@@ -1,16 +1,18 @@
 language: haxe
 sudo: false
-haxe:
- - 3.4.7
 
-install:
- - haxelib install hxnodejs
- - haxelib install vscode
- - haxelib install jstack
- - haxelib install haxeparser 3.3.0
- - haxelib install compiletime 2.6.0
- - haxelib install hxargs
- - haxelib git checkstyle https://github.com/HaxeCheckstyle/haxe-checkstyle
+matrix:
+  include:
+    - haxe: 3.4.7
+      install:
+        - yes | haxelib install build.hxml
+        - haxelib git checkstyle https://github.com/HaxeCheckstyle/haxe-checkstyle
+    - haxe: development
+      install:
+        - yes | haxelib install build.hxml
+        - haxelib git checkstyle https://github.com/HaxeCheckstyle/haxe-checkstyle
+        - haxelib git hxparse https://github.com/simn/hxparse
+        - haxelib git haxeparser https://github.com/simn/haxeparser --never
 
-script:
- - haxe build.hxml
+hxml:
+ - build.hxml

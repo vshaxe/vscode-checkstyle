@@ -4,17 +4,34 @@
     "version": "0.0.1",
     "publisher": "vshaxe",
     "engines": {
-        "vscode": "^1.0.0"
+        "vscode": "^1.0.0",
+        "nadako.vshaxe": "*"
     },
     "license": "MIT",
     "description": "Linter for Haxe files",
     "categories": [
         "Linters"
     ],
+    "galleryBanner": {
+        "theme": "dark",
+        "color": "#A84B38"
+    },
+    "badges": [
+        {
+            "url": "https://api.travis-ci.org/vshaxe/vscode-checkstyle.svg?branch=master",
+            "href": "https://travis-ci.org/vshaxe/vscode-checkstyle",
+            "description": "Travis CI Status"
+        }
+    ],
     "icon": "logo.png",
     "keywords": [
         "haxe"
     ],
+    "bugs": "https://github.com/vshaxe/vscode-checkstyle/issues",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vshaxe/vscode-checkstyle"
+    },
     "main": "bin/main.js",
     "contributes": {
         "configuration": {
@@ -37,8 +54,7 @@
         }
     },
     "activationEvents": [
-        "onLanguage:haxe",
-        "onCommand:haxecheckstyle.check"
+        "onLanguage:haxe"
     ],
     "scripts": {
         "vscode:prepublish": "haxe build.hxml"
