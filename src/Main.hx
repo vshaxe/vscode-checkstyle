@@ -71,7 +71,7 @@ class Main {
         ReporterManager.INSTANCE.clear();
         ReporterManager.INSTANCE.addReporter(reporter);
 
-        checker.checker.process(file, checker.configParser.excludesMap);
+        checker.checker.process(file);
         diagnostics.set(vscode.Uri.file(fileName), reporter.diagnostics);
     }
 
