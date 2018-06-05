@@ -51,7 +51,17 @@
                     "description": "Source folders for code style check"
                 }
             }
-        }
+        },
+        "jsonValidation": [
+            {
+                "fileMatch": "checkstyle.json",
+                "url": "https://raw.githubusercontent.com/HaxeCheckstyle/haxe-checkstyle/dev/resources/checkstyle-schema.json"
+            },
+            {
+                "fileMatch": "checkstyle-excludes.json",
+                "url": "https://raw.githubusercontent.com/HaxeCheckstyle/haxe-checkstyle/dev/resources/checkstyle-excludes-schema.json"
+            }
+        ]
     },
     "activationEvents": [
         "onLanguage:haxe"
