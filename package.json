@@ -51,7 +51,17 @@
                     "description": "Source folders for code style check"
                 }
             }
-        }
+        },
+        "jsonValidation": [
+            {
+                "fileMatch": "checkstyle.json",
+                "url": "./schemas/checkstyle-schema.json"
+            },
+            {
+                "fileMatch": "checkstyle-excludes.json",
+                "url": "./schemas/checkstyle-excludes-schema.json"
+            }
+        ]
     },
     "activationEvents": [
         "onLanguage:haxe"
