@@ -17,45 +17,51 @@ class CheckstyleCodeActions {
 
     public function provideCodeActions(document:TextDocument, range:Range, context:CodeActionContext, token:CancellationToken):ProviderResult<Array<EitherType<Command,CodeAction>>> {
         var commands:Array<EitherType<Command,CodeAction>> = [];
+        var realRange:Range = null;
+
         for (diag in context.diagnostics) {
             if (diag.source != "checkstyle") {
                 continue;
             }
+            if (!diag.range.contains(range)) {
+                continue;
+            }
+            realRange = diag.range;
             var index = diag.message.indexOf(" - ");
             if (index <= 0) {
                 continue;
             }
             var checkName:String = diag.message.substr(0, index);
             switch (checkName) {
-                case "Dynamic":
-                    var replace = StringTools.replace(document.getText(range), "Dynamic", "Any");
-                    commands.push(makeReplaceAction("Replace with Any", document, range, diag, replace));
-                case "EmptyPackage":
+                case DynamicCheck:
+                    var replace = StringTools.replace(document.getText(realRange), "Dynamic", "Any");
+                    commands.push(makeReplaceAction("Replace with Any", document, realRange, diag, replace));
+                case EmptyPackageCheck:
                     var message = diag.message.substr(index + 3);
                     if (message == "Missing package declaration") {
-                        commands.push(makeInsertAction("Add package declaration", document, range.start, diag, "package;\n"));
+                        commands.push(makeInsertAction("Add package declaration", document, realRange.start, diag, "package;\n"));
                     }
                     if (message == "Found empty package") {
-                        commands.push(makeDeleteAction("Remove package declaration", document, range, diag));
+                        commands.push(makeDeleteAction("Remove package declaration", document, realRange, diag));
                     }
-                case "Indentation":
+                case IndentationCheck:
                     var reg = ~/expected: "([^"]+)"/;
                     if (!reg.match(diag.message)) {
                         continue;
                     }
                     var replace = reg.matched(1);
                     replace = StringTools.replace(replace, "\\t", "\t");
-                    commands.push(makeReplaceAction("Fix indentation", document, range, diag, replace));
-                case "Trace":
-                    commands.push(makeDeleteAction("Delete trace", document, range, diag));
+                    commands.push(makeReplaceAction("Fix indentation", document, realRange, diag, replace));
+                case TraceCheck:
+                    commands.push(makeDeleteAction("Delete trace", document, realRange, diag));
 
-                    var prefix = document.getText(new Range(range.start.line, 0, range.start.line, range.start.character));
+                    var prefix = document.getText(new Range(realRange.start.line, 0, realRange.start.line, realRange.start.character));
                     if (~/\s+/.match(prefix)) {
                         prefix = "\n" + prefix;
                     } else {
                         prefix = " ";
                     }
-                    commands.push(makeInsertAction("Add suppression", document, range.start, diag, "@SuppressWarning('checkstyle:Trace')" + prefix));
+                    commands.push(makeInsertAction("Add suppression", document, realRange.start, diag, "@SuppressWarning('checkstyle:Trace')" + prefix));
                 default:
             }
         }
@@ -88,4 +94,12 @@ class CheckstyleCodeActions {
         action.edit = edit;
         return action;
     }
+}
+
+@:enum
+abstract CheckNames(String) {
+    var DynamicCheck = "Dynamic";
+    var EmptyPackageCheck = "EmptyPackage";
+    var IndentationCheck = "Indentation";
+    var TraceCheck = "Trace";
 }

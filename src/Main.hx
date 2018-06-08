@@ -18,6 +18,7 @@ class Main {
     function new(ctx) {
         context = ctx;
         diagnostics = Vscode.languages.createDiagnosticCollection("checkstyle");
+        codeActions = new CheckstyleCodeActions();
         Vscode.languages.registerCodeActionsProvider("haxe", codeActions);
         Vscode.workspace.onDidSaveTextDocument(check);
         Vscode.workspace.onDidOpenTextDocument(check);
