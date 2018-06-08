@@ -17,87 +17,99 @@ class CheckstyleCodeActions {
 
     public function provideCodeActions(document:TextDocument, range:Range, context:CodeActionContext, token:CancellationToken):ProviderResult<Array<EitherType<Command,CodeAction>>> {
         var commands:Array<EitherType<Command,CodeAction>> = [];
-        var realRange:Range = null;
 
+        var actions:Map<String, CodeAction> = new Map<String, CodeAction>();
         for (diag in context.diagnostics) {
             if (diag.source != "checkstyle") {
                 continue;
             }
-            if (!diag.range.contains(range)) {
+            if (range.contains(diag.range)) {
+                makeCheckAction(document, actions, diag);
                 continue;
             }
-            realRange = diag.range;
-            var index = diag.message.indexOf(" - ");
-            if (index <= 0) {
-                continue;
+            if (diag.range.contains(range)) {
+                makeCheckAction(document, actions, diag);
             }
-            var checkName:String = diag.message.substr(0, index);
-            switch (checkName) {
-                case DynamicCheck:
-                    var replace = StringTools.replace(document.getText(realRange), "Dynamic", "Any");
-                    commands.push(makeReplaceAction("Replace with Any", document, realRange, diag, replace));
-                case EmptyPackageCheck:
-                    var message = diag.message.substr(index + 3);
-                    if (message == "Missing package declaration") {
-                        commands.push(makeInsertAction("Add package declaration", document, realRange.start, diag, "package;\n"));
-                    }
-                    if (message == "Found empty package") {
-                        commands.push(makeDeleteAction("Remove package declaration", document, realRange, diag));
-                    }
-                case IndentationCheck:
-                    var reg = ~/expected: "([^"]+)"/;
-                    if (!reg.match(diag.message)) {
-                        continue;
-                    }
-                    var replace = reg.matched(1);
-                    replace = StringTools.replace(replace, "\\t", "\t");
-                    commands.push(makeReplaceAction("Fix indentation", document, realRange, diag, replace));
-                case TraceCheck:
-                    commands.push(makeDeleteAction("Delete trace", document, realRange, diag));
+        }
 
-                    var prefix = document.getText(new Range(realRange.start.line, 0, realRange.start.line, realRange.start.character));
-                    if (~/\s+/.match(prefix)) {
-                        prefix = "\n" + prefix;
-                    } else {
-                        prefix = " ";
-                    }
-                    commands.push(makeInsertAction("Add suppression", document, realRange.start, diag, "@SuppressWarning('checkstyle:Trace')" + prefix));
-                default:
-            }
+        for (name in actions.keys()) {
+            commands.push(actions.get(name));
         }
         return commands;
     }
 
-    function makeInsertAction(title:String, document:TextDocument, pos:Position, diagnostic:Diagnostic, insertText:String):CodeAction {
+    function makeCheckAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic) {
+
+        var index = diag.message.indexOf(" - ");
+        if (index <= 0) {
+            return;
+        }
+        var checkName:CheckNames = diag.message.substr(0, index);
+        switch (checkName) {
+            case DynamicCheck:
+                var replace = StringTools.replace(document.getText(diag.range), "Dynamic", "Any");
+                makeReplaceAction(actions, "Replace with Any", document, diag.range, diag, replace);
+            case EmptyPackageCheck:
+                var message = diag.message.substr(index + 3);
+                if (message == "Missing package declaration") {
+                    makeInsertAction(actions, "Add package declaration", document, diag.range.start, diag, "package;\n");
+                }
+                if (message == "Found empty package") {
+                    makeDeleteAction(actions, "Remove package declaration", document, diag.range, diag);
+                }
+            case IndentationCheck:
+                var reg = ~/expected: "([^"]+)"/;
+                if (!reg.match(diag.message)) {
+                    return;
+                }
+                var replace = reg.matched(1);
+                replace = StringTools.replace(replace, "\\t", "\t");
+                makeReplaceAction(actions, "Fix indentation", document, diag.range, diag, replace);
+            case TraceCheck:
+                makeDeleteAction(actions, "Delete trace", document, diag.range, diag);
+
+                var prefix = document.getText(new Range(diag.range.start.line, 0, diag.range.start.line, diag.range.start.character));
+                if (~/\s+/.match(prefix)) {
+                    prefix = "\n" + prefix;
+                } else {
+                    prefix = " ";
+                }
+                makeInsertAction(actions, "Add suppression", document, diag.range.start, diag, "@SuppressWarning('checkstyle:Trace')" + prefix);
+            default:
+        }
+    }
+
+    function createOrGetAction(actions:Map<String, CodeAction>, title:String, diagnostic:Diagnostic):CodeAction  {
+        if (actions.exists(title)) {
+            var action = actions.get(title);
+            action.diagnostics.push(diagnostic);
+            return action;
+        }
         var action = new CodeAction(title, CodeActionKind.QuickFix);
         action.diagnostics = [diagnostic];
-        var edit = new WorkspaceEdit();
-        edit.insert(document.uri, pos, insertText);
-        action.edit = edit;
+        action.edit = new WorkspaceEdit();
+        actions.set(title, action);
         return action;
     }
 
-    function makeReplaceAction(title:String, document:TextDocument, range:Range, diagnostic:Diagnostic, replaceText:String):CodeAction {
-        var action = new CodeAction(title, CodeActionKind.QuickFix);
-        action.diagnostics = [diagnostic];
-        var edit = new WorkspaceEdit();
-        edit.replace(document.uri, range, replaceText);
-        action.edit = edit;
-        return action;
+    function makeInsertAction(actions:Map<String, CodeAction>, title:String, document:TextDocument, pos:Position, diagnostic:Diagnostic, insertText:String)  {
+        var action:CodeAction = createOrGetAction(actions, title, diagnostic);
+        action.edit.insert(document.uri, pos, insertText);
     }
 
-    function makeDeleteAction(title:String, document:TextDocument, range:Range, diagnostic:Diagnostic):CodeAction {
-        var action = new CodeAction(title, CodeActionKind.QuickFix);
-        action.diagnostics = [diagnostic];
-        var edit = new WorkspaceEdit();
-        edit.delete(document.uri, range);
-        action.edit = edit;
-        return action;
+    function makeReplaceAction(actions:Map<String, CodeAction>, title:String, document:TextDocument, range:Range, diagnostic:Diagnostic, replaceText:String) {
+        var action:CodeAction = createOrGetAction(actions, title, diagnostic);
+        action.edit.replace(document.uri, range, replaceText);
+    }
+
+    function makeDeleteAction(actions:Map<String, CodeAction>, title:String, document:TextDocument, range:Range, diagnostic:Diagnostic)  {
+        var action:CodeAction = createOrGetAction(actions, title, diagnostic);
+        action.edit.delete(document.uri, range);
     }
 }
 
 @:enum
-abstract CheckNames(String) {
+abstract CheckNames(String) from String {
     var DynamicCheck = "Dynamic";
     var EmptyPackageCheck = "EmptyPackage";
     var IndentationCheck = "Indentation";
