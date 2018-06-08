@@ -1,6 +1,7 @@
 import checkstyle.reporter.ReporterManager;
 import checkstyle.config.Config;
 import checkstyle.config.ConfigParser;
+import checkstyle.config.ExcludeManager;
 import haxe.io.Path;
 import vscode.ExtensionContext;
 import vscode.TextDocument;
@@ -12,12 +13,16 @@ class Main {
 
     var context:ExtensionContext;
     var diagnostics:DiagnosticCollection;
+    var codeActions:CheckstyleCodeActions;
 
     function new(ctx) {
         context = ctx;
         diagnostics = Vscode.languages.createDiagnosticCollection("checkstyle");
+        codeActions = new CheckstyleCodeActions();
+        Vscode.languages.registerCodeActionsProvider("haxe", codeActions);
         Vscode.workspace.onDidSaveTextDocument(check);
         Vscode.workspace.onDidOpenTextDocument(check);
+
         for (editor in Vscode.window.visibleTextEditors) {
             check(editor.document);
         }
@@ -41,6 +46,8 @@ class Main {
         if (!fileInSourcePaths(fileName, rootFolder, checker.configParser.paths)) {
             return;
         }
+
+        ExcludeManager.INSTANCE.clear();
 
         var configuration = Vscode.workspace.getConfiguration("haxecheckstyle");
         if (configuration.has(CONFIG_OPTION) && configuration.get(CONFIG_OPTION) != "") {
