@@ -9,3 +9,6 @@ trim_trailing_whitespace = true
 [*.hx]
 end_of_line = lf
 charset = utf-8
+
+[*.yml]
+indent_size = 2

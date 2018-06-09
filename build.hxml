@@ -13,3 +13,4 @@ Main
 -lib compiletime:2.6.0
 -lib hxargs
 -lib checkstyle
+-lib tokentree
