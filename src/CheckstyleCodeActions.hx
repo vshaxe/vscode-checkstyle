@@ -65,6 +65,13 @@ class CheckstyleCodeActions {
                 var replace = reg.matched(1);
                 replace = StringTools.replace(replace, "\\t", "\t");
                 makeReplaceAction(actions, "Fix indentation", document, diag.range, diag, replace);
+            case StringLiteral:
+                if (StringTools.endsWith(diag.message, "uses single quotes instead of double quotes")) {
+                    var quoteRange = new Range(diag.range.start, diag.range.start.translate(0, 1));
+                    makeReplaceAction(actions, "Change single quotes to double Quotes", document, quoteRange, diag, '"');
+                    quoteRange = new Range(diag.range.end, diag.range.end.translate(0, -1));
+                    makeReplaceAction(actions, "Change single quotes to double Quotes", document, quoteRange, diag, '"');
+                }
             case TraceCheck:
                 makeDeleteAction(actions, "Delete trace", document, diag.range, diag);
 
@@ -75,6 +82,22 @@ class CheckstyleCodeActions {
                     prefix = " ";
                 }
                 makeInsertAction(actions, "Add suppression", document, diag.range.start, diag, "@SuppressWarning('checkstyle:Trace')" + prefix);
+            case UnusedImport:
+                var message = diag.message.substr(index + 3);
+                var line = document.lineAt(diag.range.start);
+                var importRange = diag.range;
+                if (line.range.isEqual(diag.range)) {
+                    importRange = new Range(diag.range.start, new Position(importRange.end.line + 1, 0));
+                }
+                if (StringTools.startsWith(message, "Unused import")) {
+                    makeDeleteAction(actions, "Cleanup imports", document, importRange, diag);
+                }
+                if (StringTools.startsWith(message, "Unnecessary toplevel import")) {
+                    makeDeleteAction(actions, "Cleanup imports", document, importRange, diag);
+                }
+                if (~/Detected import ".*" from same package/.match(message)) {
+                    makeDeleteAction(actions, "Cleanup imports", document, importRange, diag);
+                }
             default:
         }
     }
@@ -113,5 +136,7 @@ abstract CheckNames(String) from String {
     var DynamicCheck = "Dynamic";
     var EmptyPackageCheck = "EmptyPackage";
     var IndentationCheck = "Indentation";
+    var StringLiteral = "StringLiteral";
     var TraceCheck = "Trace";
+    var UnusedImport = "UnusedImport";
 }
