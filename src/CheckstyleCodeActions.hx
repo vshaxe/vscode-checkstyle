@@ -39,66 +39,109 @@ class CheckstyleCodeActions {
     }
 
     function makeCheckAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic) {
-
         var index = diag.message.indexOf(" - ");
         if (index <= 0) {
             return;
         }
         var checkName:CheckNames = diag.message.substr(0, index);
+        var message = diag.message.substr(index + 3);
         switch (checkName) {
             case DynamicCheck:
-                var replace = StringTools.replace(document.getText(diag.range), "Dynamic", "Any");
-                makeReplaceAction(actions, "Replace with Any", document, diag.range, diag, replace);
+                makeDynamicAction(document, actions, diag, message);
             case EmptyPackageCheck:
-                var message = diag.message.substr(index + 3);
-                if (message == "Missing package declaration") {
-                    makeInsertAction(actions, "Add package declaration", document, diag.range.start, diag, "package;\n");
-                }
-                if (message == "Found empty package") {
-                    makeDeleteAction(actions, "Remove package declaration", document, diag.range, diag);
-                }
+                makeEmptyPackageAction(document, actions, diag, message);
             case IndentationCheck:
-                var reg = ~/expected: "([^"]+)"/;
-                if (!reg.match(diag.message)) {
-                    return;
-                }
-                var replace = reg.matched(1);
-                replace = StringTools.replace(replace, "\\t", "\t");
-                makeReplaceAction(actions, "Fix indentation", document, diag.range, diag, replace);
-            case StringLiteral:
-                if (StringTools.endsWith(diag.message, "uses single quotes instead of double quotes")) {
-                    var quoteRange = new Range(diag.range.start, diag.range.start.translate(0, 1));
-                    makeReplaceAction(actions, "Change single quotes to double Quotes", document, quoteRange, diag, '"');
-                    quoteRange = new Range(diag.range.end, diag.range.end.translate(0, -1));
-                    makeReplaceAction(actions, "Change single quotes to double Quotes", document, quoteRange, diag, '"');
-                }
-            case TraceCheck:
-                makeDeleteAction(actions, "Delete trace", document, diag.range, diag);
+                makeIndentationAction(document, actions, diag, message);
+            case RedundantModifierCheck:
+                makeRedundantModifierAction(document, actions, diag, message);
+            case StringLiteralCheck:
+                makeStringLiteralAction(document, actions, diag, message);
+            case TraceCheckCheck:
+                makeTraceCheckAction(document, actions, diag, message);
+            case UnusedImportCheck:
+                makeUnusedImportAction(document, actions, diag, message);
+        }
+    }
 
-                var prefix = document.getText(new Range(diag.range.start.line, 0, diag.range.start.line, diag.range.start.character));
-                if (~/\s+/.match(prefix)) {
-                    prefix = "\n" + prefix;
-                } else {
-                    prefix = " ";
-                }
-                makeInsertAction(actions, "Add suppression", document, diag.range.start, diag, "@SuppressWarning('checkstyle:Trace')" + prefix);
-            case UnusedImport:
-                var message = diag.message.substr(index + 3);
-                var line = document.lineAt(diag.range.start);
-                var importRange = diag.range;
-                if (line.range.isEqual(diag.range)) {
-                    importRange = new Range(diag.range.start, new Position(importRange.end.line + 1, 0));
-                }
-                if (StringTools.startsWith(message, "Unused import")) {
-                    makeDeleteAction(actions, "Cleanup imports", document, importRange, diag);
-                }
-                if (StringTools.startsWith(message, "Unnecessary toplevel import")) {
-                    makeDeleteAction(actions, "Cleanup imports", document, importRange, diag);
-                }
-                if (~/Detected import ".*" from same package/.match(message)) {
-                    makeDeleteAction(actions, "Cleanup imports", document, importRange, diag);
-                }
-            default:
+    function makeDynamicAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
+        var replace = StringTools.replace(document.getText(diag.range), "Dynamic", "Any");
+        replaceAction(actions, "Replace with Any", document, diag.range, diag, replace);
+    }
+
+    function makeEmptyPackageAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
+        if (message == "Missing package declaration") {
+            insertAction(actions, "Add package declaration", document, diag.range.start, diag, "package;\n");
+        }
+        if (message == "Found empty package") {
+            deleteAction(actions, "Remove package declaration", document, diag.range, diag);
+        }
+    }
+
+    function makeIndentationAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
+        var reg = ~/expected: "([^"]+)"/;
+        if (!reg.match(message)) {
+            return;
+        }
+        var replace = reg.matched(1);
+        replace = StringTools.replace(replace, "\\t", "\t");
+        replaceAction(actions, "Fix indentation", document, diag.range, diag, replace);
+    }
+
+    function makeRedundantModifierAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
+        var missing = ~/^Missing "([^"]+)" keyword/;
+        var redundant = ~/^"([^"]+)" keyword is redundant/;
+        if (missing.match(message)) {
+            var modifier = missing.matched(1);
+            insertAction(actions, "Add public/private modifier", document, diag.range.start, diag, '$modifier ');
+        }
+        if (redundant.match(message)) {
+            var modifier = redundant.matched(1);
+            var line = document.lineAt(diag.range.start);
+            var index = line.text.indexOf('$modifier ');
+            if (index == -1) {
+                return;
+            }
+            var modifierPos = document.positionAt(document.offsetAt(line.range.start) + index);
+            var modifierRange = new Range (modifierPos, modifierPos.translate(0, modifier.length + 1));
+            replaceAction(actions, "Remove public/private modifier", document, modifierRange, diag, "");
+        }
+    }
+
+    function makeStringLiteralAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
+        if (StringTools.endsWith(message, "uses single quotes instead of double quotes")) {
+            var quoteRange = new Range(diag.range.start, diag.range.start.translate(0, 1));
+            replaceAction(actions, "Change single quotes to double Quotes", document, quoteRange, diag, '"');
+            quoteRange = new Range(diag.range.end, diag.range.end.translate(0, -1));
+            replaceAction(actions, "Change single quotes to double Quotes", document, quoteRange, diag, '"');
+        }
+    }
+
+    function makeTraceCheckAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
+        deleteAction(actions, "Delete trace", document, diag.range, diag);
+
+        var prefix = document.getText(new Range(diag.range.start.line, 0, diag.range.start.line, diag.range.start.character));
+        if (~/\s+/.match(prefix)) {
+            prefix = "\n" + prefix;
+        } else {
+            prefix = " ";
+        }
+        insertAction(actions, "Add suppression", document, diag.range.start, diag, '@SuppressWarning("checkstyle:Trace")' + prefix);
+    }
+
+    function makeUnusedImportAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
+        var line = document.lineAt(diag.range.start);
+        var importRange = diag.range;
+        if (line.range.isEqual(diag.range)) {
+            importRange = new Range(diag.range.start, new Position(importRange.end.line + 1, 0));
+        }
+        if (StringTools.startsWith(message, "Unused import")) {
+            deleteAction(actions, "Cleanup imports", document, importRange, diag);
+        }
+        if (StringTools.startsWith(message, "Unnecessary toplevel import")) {
+            deleteAction(actions, "Cleanup imports", document, importRange, diag);
+        }
+        if (~/Detected import ".*" from same package/.match(message)) {
+            deleteAction(actions, "Cleanup imports", document, importRange, diag);
         }
     }
 
@@ -115,17 +158,17 @@ class CheckstyleCodeActions {
         return action;
     }
 
-    function makeInsertAction(actions:Map<String, CodeAction>, title:String, document:TextDocument, pos:Position, diagnostic:Diagnostic, insertText:String)  {
+    function insertAction(actions:Map<String, CodeAction>, title:String, document:TextDocument, pos:Position, diagnostic:Diagnostic, insertText:String)  {
         var action:CodeAction = createOrGetAction(actions, title, diagnostic);
         action.edit.insert(document.uri, pos, insertText);
     }
 
-    function makeReplaceAction(actions:Map<String, CodeAction>, title:String, document:TextDocument, range:Range, diagnostic:Diagnostic, replaceText:String) {
+    function replaceAction(actions:Map<String, CodeAction>, title:String, document:TextDocument, range:Range, diagnostic:Diagnostic, replaceText:String) {
         var action:CodeAction = createOrGetAction(actions, title, diagnostic);
         action.edit.replace(document.uri, range, replaceText);
     }
 
-    function makeDeleteAction(actions:Map<String, CodeAction>, title:String, document:TextDocument, range:Range, diagnostic:Diagnostic)  {
+    function deleteAction(actions:Map<String, CodeAction>, title:String, document:TextDocument, range:Range, diagnostic:Diagnostic)  {
         var action:CodeAction = createOrGetAction(actions, title, diagnostic);
         action.edit.delete(document.uri, range);
     }
@@ -136,7 +179,8 @@ abstract CheckNames(String) from String {
     var DynamicCheck = "Dynamic";
     var EmptyPackageCheck = "EmptyPackage";
     var IndentationCheck = "Indentation";
-    var StringLiteral = "StringLiteral";
-    var TraceCheck = "Trace";
-    var UnusedImport = "UnusedImport";
+    var RedundantModifierCheck = "RedundantModifier";
+    var StringLiteralCheck = "StringLiteral";
+    var TraceCheckCheck = "Trace";
+    var UnusedImportCheck = "UnusedImport";
 }
