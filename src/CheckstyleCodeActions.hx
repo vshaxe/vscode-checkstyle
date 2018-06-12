@@ -69,11 +69,12 @@ class CheckstyleCodeActions {
     }
 
     function makeEmptyPackageAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
-        if (message == "Missing package declaration") {
-            insertAction(actions, "Add package declaration", document, diag.range.start, diag, "package;\n");
-        }
-        if (message == "Found empty package") {
-            deleteAction(actions, "Remove package declaration", document, diag.range, diag);
+        var code:checkstyle.checks.design.EmptyPackageCheck.EmptyPackageCode = cast diag.code;
+        switch(code) {
+            case MISSING_PACKAGE:
+                insertAction(actions, "Add package declaration", document, diag.range.start, diag, "package;\n");
+            case REDUNDANT_PACKAGE:
+                deleteAction(actions, "Remove package declaration", document, diag.range, diag);
         }
     }
 
@@ -88,32 +89,43 @@ class CheckstyleCodeActions {
     }
 
     function makeRedundantModifierAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
-        var missing = ~/^Missing "([^"]+)" keyword/;
-        var redundant = ~/^"([^"]+)" keyword is redundant/;
-        if (missing.match(message)) {
-            var modifier = missing.matched(1);
-            insertAction(actions, "Add public/private modifier", document, diag.range.start, diag, '$modifier ');
-        }
-        if (redundant.match(message)) {
-            var modifier = redundant.matched(1);
-            var line = document.lineAt(diag.range.start);
-            var index = line.text.indexOf('$modifier ');
-            if (index == -1) {
-                return;
-            }
-            var modifierPos = document.positionAt(document.offsetAt(line.range.start) + index);
-            var modifierRange = new Range (modifierPos, modifierPos.translate(0, modifier.length + 1));
-            replaceAction(actions, "Remove public/private modifier", document, modifierRange, diag, "");
+        var code:checkstyle.checks.modifier.RedundantModifierCheck.RedundantModifierCode = cast diag.code;
+        switch (code) {
+            case MISSING_PUBLIC, MISSING_PRIVATE:
+                var modifier = (code == MISSING_PUBLIC) ? "public" : "private";
+                insertAction(actions, "Add public/private modifier", document, diag.range.start, diag, '$modifier ');
+            case REDUNDANT_PUBLIC, REDUNDANT_PRIVATE:
+                var modifier = (code == REDUNDANT_PUBLIC) ? "public" : "private";
+                var line = document.lineAt(diag.range.start);
+                var index = line.text.indexOf('$modifier ');
+                if (index == -1) {
+                    return;
+                }
+                var modifierPos = document.positionAt(document.offsetAt(line.range.start) + index);
+                var modifierRange = new Range (modifierPos, modifierPos.translate(0, modifier.length + 1));
+                replaceAction(actions, "Remove public/private modifier", document, modifierRange, diag, "");
         }
     }
 
     function makeStringLiteralAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
-        if (StringTools.endsWith(message, "uses single quotes instead of double quotes")) {
-            var quoteRange = new Range(diag.range.start, diag.range.start.translate(0, 1));
-            replaceAction(actions, "Change single quotes to double Quotes", document, quoteRange, diag, '"');
-            quoteRange = new Range(diag.range.end, diag.range.end.translate(0, -1));
-            replaceAction(actions, "Change single quotes to double Quotes", document, quoteRange, diag, '"');
+        var code:checkstyle.checks.literal.StringLiteralCheck.StringLiteralCode = cast diag.code;
+        var text:String = null;
+        var quote:String = null;
+        switch(code) {
+            case USE_DOUBLE_QUOTES:
+                text = "Change single quotes to double quotes";
+                quote = '"';
+            case USE_SINGLE_QUOTES:
+                text = "Change double quotes to single quotes";
+                quote = "'";
         }
+        if (text == null) {
+            return;
+        }
+        var quoteRange = new Range(diag.range.start, diag.range.start.translate(0, 1));
+        replaceAction(actions, text, document, quoteRange, diag, quote);
+        quoteRange = new Range(diag.range.end, diag.range.end.translate(0, -1));
+        replaceAction(actions, text, document, quoteRange, diag, quote);
     }
 
     function makeTraceCheckAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
@@ -134,14 +146,12 @@ class CheckstyleCodeActions {
         if (line.range.isEqual(diag.range)) {
             importRange = new Range(diag.range.start, new Position(importRange.end.line + 1, 0));
         }
-        if (StringTools.startsWith(message, "Unused import")) {
-            deleteAction(actions, "Cleanup imports", document, importRange, diag);
-        }
-        if (StringTools.startsWith(message, "Unnecessary toplevel import")) {
-            deleteAction(actions, "Cleanup imports", document, importRange, diag);
-        }
-        if (~/Detected import ".*" from same package/.match(message)) {
-            deleteAction(actions, "Cleanup imports", document, importRange, diag);
+
+        var code:checkstyle.checks.imports.UnusedImportCheck.UnusedImportCode = cast diag.code;
+        switch(code) {
+            case UNUSED_IMPORT,  TOPLEVEL_IMPORT, SAME_PACKAGE, DUPLICATE_IMPORT:
+                deleteAction(actions, "Cleanup imports", document, importRange, diag);
+            case MULTIPLE_PACKAGE:
         }
     }
 
