@@ -28,6 +28,12 @@
             "type": "LeftCurly"
         },
         {
+            "type": "RedundantModifier",
+            "props": {
+                "enforcePublicPrivate": false
+            }
+        },
+        {
             "props": {
                 "tokens": [
                     "CLASS_DEF",

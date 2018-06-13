@@ -16,13 +16,11 @@
         "theme": "dark",
         "color": "#A84B38"
     },
-    "badges": [
-        {
-            "url": "https://api.travis-ci.org/vshaxe/vscode-checkstyle.svg?branch=master",
-            "href": "https://travis-ci.org/vshaxe/vscode-checkstyle",
-            "description": "Travis CI Status"
-        }
-    ],
+    "badges": [{
+        "url": "https://api.travis-ci.org/vshaxe/vscode-checkstyle.svg?branch=master",
+        "href": "https://travis-ci.org/vshaxe/vscode-checkstyle",
+        "description": "Travis CI Status"
+    }],
     "icon": "logo.png",
     "keywords": [
         "haxe"
@@ -46,20 +44,19 @@
                     "type": "array",
                     "default": [
                         "src",
-                        "source"
+                        "Source"
                     ],
                     "description": "Source folders for code style check"
                 }
             }
         },
-        "jsonValidation": [
-            {
+        "jsonValidation": [{
                 "fileMatch": "checkstyle.json",
-                "url": "./schemas/checkstyle-schema.json"
+                "url": "./resources/checkstyle-schema.json"
             },
             {
                 "fileMatch": "checkstyle-excludes.json",
-                "url": "./schemas/checkstyle-excludes-schema.json"
+                "url": "./resources/checkstyle-excludes-schema.json"
             }
         ]
     },

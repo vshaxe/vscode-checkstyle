@@ -8,6 +8,7 @@ import vscode.TextDocument;
 import vscode.DiagnosticCollection;
 
 class Main {
+    static inline var MAIN_CONFIG_KEY = "haxecheckstyle";
     static inline var CONFIG_OPTION = "configurationFile";
     static inline var SOURCE_FOLDERS = "sourceFolders";
 
@@ -49,7 +50,43 @@ class Main {
 
         ExcludeManager.INSTANCE.clear();
 
-        var configuration = Vscode.workspace.getConfiguration("haxecheckstyle");
+        loadConfig(checker, rootFolder);
+
+        var file:Array<checkstyle.CheckFile> = [{ name: fileName, content: null, index: 0 }];
+        var reporter = new VSCodeReporter(1, checker.configParser.getCheckCount(), checker.checker.checks.length, null, false);
+        ReporterManager.INSTANCE.clear();
+        ReporterManager.INSTANCE.addReporter(reporter);
+
+        checker.checker.process(file);
+        diagnostics.set(vscode.Uri.file(fileName), reporter.diagnostics);
+    }
+
+    @:access(checkstyle)
+    function loadConfig(checker:checkstyle.Main, rootFolder:String) {
+        // use checkstyle.json from project folder
+        var defaultPath = Path.join([rootFolder, "checkstyle.json"]);
+        if (sys.FileSystem.exists(defaultPath)) {
+            try {
+                checker.configPath = defaultPath;
+                checker.configParser.loadConfig(checker.configPath);
+                return;
+            }
+            catch (e:Dynamic) {
+                checker.configPath = null;
+            }
+            try {
+                defaultPath = Path.join([rootFolder, "checkstyle-excludes.json"]);
+                if (sys.FileSystem.exists(defaultPath)) {
+                    checker.configParser.loadExcludeConfig(defaultPath);
+                }
+                return;
+            }
+            catch (e:Dynamic) {
+                return;
+            }
+        }
+        // use config file set through vscode settings
+        var configuration = Vscode.workspace.getConfiguration(MAIN_CONFIG_KEY);
         if (configuration.has(CONFIG_OPTION) && configuration.get(CONFIG_OPTION) != "") {
             try {
                 var file = configuration.get(CONFIG_OPTION);
@@ -59,30 +96,25 @@ class Main {
                     checker.configPath = Path.join([rootFolder, file]);
                 }
                 checker.configParser.loadConfig(checker.configPath);
+                return;
             }
             catch (e:Dynamic) {
                 checker.configPath = null;
             }
         }
+        // default use vscode-checkstyles own builtin config
+        useInternalCheckstyleConfig(checker, rootFolder);
+    }
 
-        if (checker.configPath == null) {
-            // TODO make it a configuration option with a default config, so people can use checkstyle without checkstyle.json file
-            var config:Config = CompileTime.parseJsonFile("checkstyle.json");
-            try {
-                checker.configParser.parseAndValidateConfig(config, rootFolder);
-            }
-            catch (e:Dynamic) {
-                checker.configParser.addAllChecks();
-            }
+    @:access(checkstyle)
+    function useInternalCheckstyleConfig(checker:checkstyle.Main, rootFolder:String) {
+        var config:Config = CompileTime.parseJsonFile("checkstyle.json");
+        try {
+            checker.configParser.parseAndValidateConfig(config, rootFolder);
         }
-
-        var file:Array<checkstyle.CheckFile> = [{ name: fileName, content: null, index: 0 }];
-        var reporter = new VSCodeReporter(1, checker.configParser.getCheckCount(), checker.checker.checks.length, null, false);
-        ReporterManager.INSTANCE.clear();
-        ReporterManager.INSTANCE.addReporter(reporter);
-
-        checker.checker.process(file);
-        diagnostics.set(vscode.Uri.file(fileName), reporter.diagnostics);
+        catch (e:Dynamic) {
+            checker.configParser.addAllChecks();
+        }
     }
 
     function determineRootFolder(fileName:String):String {
@@ -99,7 +131,7 @@ class Main {
     }
 
     function addSourcePaths(configParser:ConfigParser) {
-        var configuration = Vscode.workspace.getConfiguration("haxecheckstyle");
+        var configuration = Vscode.workspace.getConfiguration(MAIN_CONFIG_KEY);
         if (!configuration.has(SOURCE_FOLDERS)) {
             return;
         }
