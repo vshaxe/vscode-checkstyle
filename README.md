@@ -7,6 +7,7 @@
 * Runs haxe-checkstyle when documents are opened or saved
 * Display results as VS Code diagnostics
 * Supports quickfixes for a small selection of checks
+* Includes json schema definitions for both `checkstyle.json` and `checkstyle-excludes.json`
 
 ## Configuration
 
@@ -27,6 +28,12 @@ The following checks provide quickfixes:
 - StringLiteral
 - Trace
 - UnusedImport
+
+## Json schema definitions
+
+vscode-checkstyle comes with json schemas for `checkstyle.json` and `checkstyle-excludes.json`, which will help you through autocomplete and documentation when editing both file types. e.g.:
+
+![CheckstyleSchema](resources/CheckstyleSchema.gif)
 
 ## TODO
 
