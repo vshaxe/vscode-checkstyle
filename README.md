@@ -8,6 +8,8 @@
 * Displays results as VS Code diagnostics
 * Supports quickfixes for a small selection of checks
 * Includes json schema definitions for both `checkstyle.json` and `checkstyle-excludes.json`
+* Uses [haxe-checkstyle](https://github.com/HaxeCheckstyle/haxe-checkstyle) engine
+* Works with your existing haxe-checkstyle configuration
 
 ## Configuration
 
@@ -18,6 +20,7 @@ A second configuration key named `haxecheckstyle.sourceFolders` holds an array o
 ## Quickfixes
 
 You can apply quickfixes one at a time or by selecting a range including multiple checkstyle violations.
+
 ![RedundantModifierQuickfixes](resources/RedundantModifierQuickfixes.gif)
 
 The following checks provide quickfixes:
@@ -34,6 +37,10 @@ The following checks provide quickfixes:
 vscode-checkstyle comes with JSON schemas for `checkstyle.json` and `checkstyle-excludes.json`, which will help you through autocomplete and documentation when editing both file types. e.g.:
 
 ![CheckstyleSchema](resources/CheckstyleSchema.gif)
+
+## Documentation
+
+See [Haxe-Checkstyle docs](http://haxecheckstyle.github.io/docs) or use JSON Schema tooltips for documentation on checks.
 
 ## TODO
 
