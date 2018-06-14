@@ -1,11 +1,11 @@
-# VS Code extension for haxe-checkstyle
+# Haxe Checkstyle for Visual Studio Code
 
 [![Build Status](https://travis-ci.org/vshaxe/vscode-checkstyle.svg?branch=master)](https://travis-ci.org/vshaxe/vscode-checkstyle)
 
 ## Features
 
 * Runs haxe-checkstyle when documents are opened or saved
-* Display results as VS Code diagnostics
+* Displays results as VS Code diagnostics
 * Supports quickfixes for a small selection of checks
 * Includes json schema definitions for both `checkstyle.json` and `checkstyle-excludes.json`
 
@@ -29,9 +29,9 @@ The following checks provide quickfixes:
 - Trace
 - UnusedImport
 
-## Json schema definitions
+## JSON Schema Definitions
 
-vscode-checkstyle comes with json schemas for `checkstyle.json` and `checkstyle-excludes.json`, which will help you through autocomplete and documentation when editing both file types. e.g.:
+vscode-checkstyle comes with JSON schemas for `checkstyle.json` and `checkstyle-excludes.json`, which will help you through autocomplete and documentation when editing both file types. e.g.:
 
 ![CheckstyleSchema](resources/CheckstyleSchema.gif)
 

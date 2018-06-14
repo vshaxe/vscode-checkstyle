@@ -1,10 +1,10 @@
 {
     "name": "haxe-checkstyle",
     "displayName": "Haxe Checkstyle",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "publisher": "vshaxe",
     "engines": {
-        "vscode": "^1.0.0",
+        "vscode": "^1.20.0",
         "nadako.vshaxe": "*"
     },
     "license": "MIT",
@@ -16,11 +16,13 @@
         "theme": "dark",
         "color": "#A84B38"
     },
-    "badges": [{
-        "url": "https://api.travis-ci.org/vshaxe/vscode-checkstyle.svg?branch=master",
-        "href": "https://travis-ci.org/vshaxe/vscode-checkstyle",
-        "description": "Travis CI Status"
-    }],
+    "badges": [
+        {
+            "url": "https://api.travis-ci.org/vshaxe/vscode-checkstyle.svg?branch=master",
+            "href": "https://travis-ci.org/vshaxe/vscode-checkstyle",
+            "description": "Travis CI Status"
+        }
+    ],
     "icon": "logo.png",
     "keywords": [
         "haxe"
@@ -50,7 +52,8 @@
                 }
             }
         },
-        "jsonValidation": [{
+        "jsonValidation": [
+            {
                 "fileMatch": "checkstyle.json",
                 "url": "./resources/checkstyle-schema.json"
             },
