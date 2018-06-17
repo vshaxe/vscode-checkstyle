@@ -4,7 +4,7 @@
 
 ## Features
 
-* Runs haxe-checkstyle when documents are opened or saved
+* Runs haxe-checkstyle when opening and saving documents
 * Displays results as VS Code diagnostics
 * Supports quickfixes for a small selection of checks
 * Includes json schema definitions for both `checkstyle.json` and `checkstyle-excludes.json`
@@ -13,9 +13,14 @@
 
 ## Configuration
 
-vscode-checkstyle accepts your regular haxe-checkstyle configuration files. It will first try to read `checkstyle.json` and `checkstyle-excludes.json` from your workspace folder (`checkstyle-excludes.json` is optional). If there is no `checkstyle.json` in your workspace folder, vscode-checkstyle tries to learn its location by reading key `haxecheckstyle.configurationFile` from your VSCode settings. Failing both vscode-checkstyle will use its own builtin default configuration which you can see in its project's root folder.
+A configuration key named `haxecheckstyle.sourceFolders` holds an array of folder names where checkstyle should run. It defaults to `["src", "Source"]`, which is the equivalent to passing `-s <src> -s <Source>` to haxe-checkstyle CLI. Checkstyle will ignore any file not included in `sourceFolders`.
 
-A second configuration key named `haxecheckstyle.sourceFolders` holds an array of folder names where checkstyle should run. It's the equivalent to passing `-s <foldername1> -s <foldername2>` to haxe-checkstyle. It defaults to `["src", "Source"]`.
+vscode-checkstyle accepts your regular haxe-checkstyle configuration files (`checkstyle.json` and `checkstyle-excludes.json`).
+
+Unlike the CLI version vscode-checkstyle will search a file's path for a `checkstyle.json` configuration that is closest to it. Searching moves upwards and stops at (but includes) your workspace root.
+That way you can have a library folder inside your workspace provide its own `checkstyle.json` (which might be different from your personal coding style).
+
+If there is no `checkstyle.json` in any folders up to your workspace root, vscode-checkstyle tries to learn its location by reading key `haxecheckstyle.configurationFile` from your VS Code settings. Failing both vscode-checkstyle will use its own builtin default configuration which you can view [here](https://raw.githubusercontent.com/vshaxe/vscode-checkstyle/master/checkstyle.json).
 
 ## Quickfixes
 
@@ -34,7 +39,7 @@ The following checks provide quickfixes:
 
 ## JSON Schema Definitions
 
-vscode-checkstyle comes with JSON schemas for `checkstyle.json` and `checkstyle-excludes.json`, which will help you through autocomplete and documentation when editing both file types. e.g.:
+vscode-checkstyle comes with JSON schemas for `checkstyle.json` and `checkstyle-excludes.json`, which will help you through autocomplete and tooltips when editing both file types. e.g.:
 
 ![CheckstyleSchema](resources/CheckstyleSchema.gif)
 

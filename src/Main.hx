@@ -12,6 +12,9 @@ class Main {
     static inline var CONFIG_OPTION = "configurationFile";
     static inline var SOURCE_FOLDERS = "sourceFolders";
 
+    static inline var CHECKSTYLE_JSON = "checkstyle.json";
+    static inline var CHECKSTYLE_EXLCUDE_JSON = "checkstyle-excludes.json";
+
     var context:ExtensionContext;
     var diagnostics:DiagnosticCollection;
     var codeActions:CheckstyleCodeActions;
@@ -50,7 +53,7 @@ class Main {
 
         ExcludeManager.INSTANCE.clear();
 
-        loadConfig(checker, rootFolder);
+        loadConfig(checker, fileName, rootFolder);
 
         var file:Array<checkstyle.CheckFile> = [{ name: fileName, content: null, index: 0 }];
         var reporter = new VSCodeReporter(1, checker.configParser.getCheckCount(), checker.checker.checks.length, null, false);
@@ -62,31 +65,38 @@ class Main {
     }
 
     @:access(checkstyle)
-    function loadConfig(checker:checkstyle.Main, rootFolder:String) {
+    function loadConfig(checker:checkstyle.Main, fileName:String, rootFolder:String) {
         // use checkstyle.json from project folder
-        var defaultPath = Path.join([rootFolder, "checkstyle.json"]);
-        if (sys.FileSystem.exists(defaultPath)) {
-            try {
-                checker.configPath = defaultPath;
-                checker.configParser.loadConfig(checker.configPath);
-                return;
-            }
-            catch (e:Dynamic) {
-                checker.configPath = null;
-            }
-            try {
-                defaultPath = Path.join([rootFolder, "checkstyle-excludes.json"]);
-                if (sys.FileSystem.exists(defaultPath)) {
-                    checker.configParser.loadExcludeConfig(defaultPath);
-                }
-                return;
-            }
-            catch (e:Dynamic) {
-                return;
-            }
+        var defaultPath = determineConfigFolder(fileName, rootFolder);
+        if (defaultPath == null) {
+            loadConfigFromSettings(checker, rootFolder);
+            return;
         }
+
+        try {
+            checker.configPath = Path.join([defaultPath, CHECKSTYLE_JSON]);
+            checker.configParser.loadConfig(checker.configPath);
+            try {
+                var excludeConfig = Path.join([defaultPath, CHECKSTYLE_EXLCUDE_JSON]);
+                if (sys.FileSystem.exists(excludeConfig)) {
+                    checker.configParser.loadExcludeConfig(excludeConfig);
+                }
+            }
+            catch (e:Dynamic) {
+                // tolerate failures for exclude config
+            }
+            return;
+        }
+        catch (e:Dynamic) {
+            checker.configPath = null;
+        }
+        loadConfigFromSettings(checker, rootFolder);
+    }
+
+    @:access(checkstyle)
+    function loadConfigFromSettings(checker:checkstyle.Main, rootFolder:String) {
         // use config file set through vscode settings
-        var configuration = Vscode.workspace.getConfiguration(MAIN_CONFIG_KEY);
+        var configuration:vscode.WorkspaceConfiguration = Vscode.workspace.getConfiguration(MAIN_CONFIG_KEY);
         if (configuration.has(CONFIG_OPTION) && configuration.get(CONFIG_OPTION) != "") {
             try {
                 var file = configuration.get(CONFIG_OPTION);
@@ -104,6 +114,19 @@ class Main {
         }
         // default use vscode-checkstyles own builtin config
         useInternalCheckstyleConfig(checker, rootFolder);
+    }
+
+    function determineConfigFolder(fileName:String, rootFolder:String):String {
+        var path:String = Path.directory(fileName);
+
+        while (path.length >= rootFolder.length) {
+            var configFile:String = Path.join([path, CHECKSTYLE_JSON]);
+            if (sys.FileSystem.exists(configFile)) {
+                return path;
+            }
+            path = Path.normalize(Path.join([path, ".."]));
+        }
+        return null;
     }
 
     @:access(checkstyle)

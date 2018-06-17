@@ -1,3 +1,7 @@
+### development version
+
+- allow `checkstyle.json` in subfolders to take precedence for files within that folder structure
+
 ### 1.0.1 (June 14, 2018)
 
 - fixed an error on extension startup
