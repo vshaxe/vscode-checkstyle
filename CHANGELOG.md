@@ -1,6 +1,7 @@
 ### development version
 
 - allow `checkstyle.json` in subfolders to take precedence for files within that folder structure
+- updated json schemas to include doc comment checks
 
 ### 1.0.1 (June 14, 2018)
 
