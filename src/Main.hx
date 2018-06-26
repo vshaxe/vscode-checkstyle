@@ -45,6 +45,7 @@ class Main {
         }
 
         var checker = new checkstyle.Main();
+        checker.configParser.validateMode = ConfigValidateMode.RELAXED;
         addSourcePaths(checker.configParser);
 
         if (!fileInSourcePaths(fileName, rootFolder, checker.configParser.paths)) {
