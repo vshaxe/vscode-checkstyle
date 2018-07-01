@@ -1,7 +1,7 @@
 ### development version
 
 - allow `checkstyle.json` in subfolders to take precedence for files within that folder structure
-- updated json schemas to include doc comment and redundant meta access checks
+- updated json schemas to checkstyle v2.4.2
 - use configuration parser in relaxed mode, tolerating unknown properties
 
 ### 1.0.1 (June 14, 2018)
