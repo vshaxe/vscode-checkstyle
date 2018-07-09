@@ -35,7 +35,7 @@
     "main": "bin/main.js",
     "contributes": {
         "configuration": {
-            "title": "Haxe checkstyle configuration",
+            "title": "Haxe Checkstyle",
             "properties": {
                 "haxecheckstyle.configurationFile": {
                     "type": "string",
