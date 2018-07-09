@@ -1,6 +1,6 @@
-### dev version
+### 1.2.0 (July 9, 2018)
 
-- changed default configuration to use empty `resources/default-checkstyle.json`
+- changed to an empty default config (so a `checkstyle.json` is now always needed)
 - use tokentree in relaxed mode, tolerating some parser errors
 
 ### 1.1.0 (July 1, 2018)
