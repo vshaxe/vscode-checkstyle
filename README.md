@@ -20,7 +20,7 @@ vscode-checkstyle accepts your regular haxe-checkstyle configuration files (`che
 Unlike the CLI version vscode-checkstyle will search a file's path for a `checkstyle.json` configuration that is closest to it. Searching moves upwards and stops at (but includes) your workspace root.
 That way you can have a library folder inside your workspace provide its own `checkstyle.json` (which might be different from your personal coding style).
 
-If there is no `checkstyle.json` in any folders up to your workspace root, vscode-checkstyle tries to learn its location by reading key `haxecheckstyle.configurationFile` from your VS Code settings. Failing both vscode-checkstyle will use its own builtin default configuration which you can view [here](https://raw.githubusercontent.com/vshaxe/vscode-checkstyle/master/checkstyle.json).
+If there is no `checkstyle.json` in any folders up to your workspace root, vscode-checkstyle tries to learn its location by reading key `haxecheckstyle.configurationFile` from your VS Code settings.
 
 ## Quickfixes
 
