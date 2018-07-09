@@ -1,3 +1,8 @@
+### dev version
+
+- changed default configuration to use empty `resources/default-checkstyle.json`
+- use tokentree in relaxed mode, tolerating some parser errors
+
 ### 1.1.0 (July 1, 2018)
 
 - updated haxe-checkstyle to 2.4.2

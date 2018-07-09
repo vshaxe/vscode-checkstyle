@@ -44,6 +44,7 @@ class Main {
             return;
         }
 
+        tokentree.TokenStream.MODE = RELAXED;
         var checker = new checkstyle.Main();
         checker.configParser.validateMode = ConfigValidateMode.RELAXED;
         addSourcePaths(checker.configParser);
@@ -132,7 +133,7 @@ class Main {
 
     @:access(checkstyle)
     function useInternalCheckstyleConfig(checker:checkstyle.Main, rootFolder:String) {
-        var config:Config = CompileTime.parseJsonFile("checkstyle.json");
+        var config:Config = CompileTime.parseJsonFile("resources/default-checkstyle.json");
         try {
             checker.configParser.parseAndValidateConfig(config, rootFolder);
         }
