@@ -1,0 +1,43 @@
+{
+	"checks": [
+		{
+			"type": "RedundantModifier",
+			"props": {
+				"enforcePublicPrivate": false
+			}
+		},
+		{
+			"props": {
+				"tokens": [
+					"CLASS_DEF",
+					"ENUM_DEF",
+					"ABSTRACT_DEF",
+					"TYPEDEF_DEF",
+					"INTERFACE_DEF",
+					"OBJECT_DECL",
+					"FUNCTION",
+					"FOR",
+					"WHILE",
+					"SWITCH",
+					"TRY",
+					"CATCH"
+				],
+				"option": "aloneorsingle"
+			},
+			"type": "RightCurly"
+		},
+		{
+			"props": {
+				"format": "TODO|FIXME|XXX",
+				"severity": "INFO"
+			},
+			"type": "TODOComment"
+		},
+		{
+			"props": {
+				"severity": "INFO"
+			},
+			"type": "Trace"
+		}
+	]
+}

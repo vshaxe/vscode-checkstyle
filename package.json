@@ -1,38 +1,72 @@
 {
-    "name": "haxe-checkstyle",
-    "displayName": "Haxe Checkstyle",
-    "version": "0.0.1",
-    "publisher": "vshaxe",
-    "engines": {
-        "vscode": "^1.0.0"
-    },
-    "license": "MIT",
-    "description": "Linter for Haxe files",
-    "categories": [
-        "Linters"
-    ],
-    "icon": "logo.png",
-    "keywords": [
-        "haxe"
-    ],
-    "main": "bin/main.js",
-    "contributes": {
-        "configuration": {
-            "title": "Haxe checkstyle configuration",
-            "properties": {
-                "haxecheckstyle.configurationFile": {
-                    "type": "string",
-                    "default": "",
-                    "description": "Configuration file for the code style check"
-                }
-            }
-        }
-    },
-    "activationEvents": [
-        "onLanguage:haxe",
-        "onCommand:haxecheckstyle.check"
-    ],
-    "scripts": {
-        "vscode:prepublish": "haxe build.hxml"
-    }
+	"name": "haxe-checkstyle",
+	"displayName": "Haxe Checkstyle",
+	"version": "1.2.0",
+	"publisher": "vshaxe",
+	"engines": {
+		"vscode": "^1.20.0",
+		"nadako.vshaxe": "*"
+	},
+	"license": "MIT",
+	"description": "Linter for Haxe files",
+	"categories": [
+		"Linters"
+	],
+	"galleryBanner": {
+		"theme": "dark",
+		"color": "#A84B38"
+	},
+	"badges": [
+		{
+			"url": "https://api.travis-ci.org/vshaxe/vscode-checkstyle.svg?branch=master",
+			"href": "https://travis-ci.org/vshaxe/vscode-checkstyle",
+			"description": "Travis CI Status"
+		}
+	],
+	"icon": "logo.png",
+	"keywords": [
+		"haxe"
+	],
+	"bugs": "https://github.com/vshaxe/vscode-checkstyle/issues",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/vshaxe/vscode-checkstyle"
+	},
+	"main": "bin/main.js",
+	"contributes": {
+		"configuration": {
+			"title": "Haxe Checkstyle",
+			"properties": {
+				"haxecheckstyle.configurationFile": {
+					"type": "string",
+					"default": "",
+					"description": "Configuration file for the code style check"
+				},
+				"haxecheckstyle.sourceFolders": {
+					"type": "array",
+					"default": [
+						"src",
+						"Source"
+					],
+					"description": "Source folders for code style check"
+				}
+			}
+		},
+		"jsonValidation": [
+			{
+				"fileMatch": "checkstyle.json",
+				"url": "./resources/checkstyle-schema.json"
+			},
+			{
+				"fileMatch": "checkstyle-excludes.json",
+				"url": "./resources/checkstyle-excludes-schema.json"
+			}
+		]
+	},
+	"activationEvents": [
+		"onLanguage:haxe"
+	],
+	"scripts": {
+		"vscode:prepublish": "haxe build.hxml"
+	}
 }

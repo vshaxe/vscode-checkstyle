@@ -1,15 +1,13 @@
 # extension
 -lib hxnodejs
 -lib vscode
--lib jstack
--D JSTACK_MAIN=Main.main
 -cp src
 -js bin/main.js
--debug
 Main
 
 # checkstyle
--lib haxeparser:3.3.0
+-lib haxeparser
 -lib compiletime:2.6.0
 -lib hxargs
 -lib checkstyle
+-lib tokentree

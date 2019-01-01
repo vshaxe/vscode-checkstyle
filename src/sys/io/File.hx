@@ -6,39 +6,37 @@ package sys.io;
  *
  * Original: https://github.com/HaxeFoundation/hxnodejs/blob/master/src/sys/io/File.hx
  */
-
 import js.node.Fs;
 
 @:dce
 // @:coreApi
 class File {
+	/******* STUB *******/
+	public static function write(path:String, binary:Bool = true):FileOutput {
+		return null;
+	}
 
-    /******* STUB *******/
-    public static function write (path:String, binary:Bool = true):FileOutput {
-        return null;
-    }
-    /******* STUB *******/
-
-	public static inline function getContent( path : String ) : String {
+	/******* STUB *******/
+	public static inline function getContent(path:String):String {
 		return Fs.readFileSync(path, {encoding: "utf8"});
 	}
 
-	public static inline function saveContent( path : String, content : String ) : Void {
+	public static inline function saveContent(path:String, content:String):Void {
 		Fs.writeFileSync(path, content);
 	}
 
-	public static inline function getBytes( path : String ) : haxe.io.Bytes {
+	public static inline function getBytes(path:String):haxe.io.Bytes {
 		return Fs.readFileSync(path).hxToBytes();
 	}
 
-	public static inline function saveBytes( path : String, bytes : haxe.io.Bytes ) : Void {
+	public static inline function saveBytes(path:String, bytes:haxe.io.Bytes):Void {
 		Fs.writeFileSync(path, js.node.Buffer.hxFromBytes(bytes));
 	}
 
 	static inline var copyBufLen = 64 * 1024;
 	static var copyBuf = new js.node.Buffer(copyBufLen);
 
-	public static function copy( srcPath : String, dstPath : String ) : Void {
+	public static function copy(srcPath:String, dstPath:String):Void {
 		var src = Fs.openSync(srcPath, Read);
 		var stat = Fs.fstatSync(src);
 		var dst = Fs.openSync(dstPath, WriteCreate, stat.mode);
