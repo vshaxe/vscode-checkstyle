@@ -147,7 +147,7 @@ class Main {
 				return workspaceFolder.uri.fsPath;
 			}
 		}
-		return null;
+		return Vscode.workspace.workspaceFolders[0].uri.fsPath; // try first workspace folder
 	}
 
 	function addSourcePaths(configParser:ConfigParser) {
@@ -168,7 +168,7 @@ class Main {
 		fileName = normalizePath(fileName);
 		for (path in paths) {
 			var rootPath = normalizePath(Path.join([rootFolder, path]));
-			if (StringTools.startsWith(fileName, rootPath)) {
+			if (StringTools.startsWith(fileName, rootPath) || StringTools.startsWith(fileName, path)) {
 				return true;
 			}
 		}
