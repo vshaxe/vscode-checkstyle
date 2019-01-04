@@ -49,6 +49,11 @@
 						"Source"
 					],
 					"description": "Source folders for code style check"
+				},
+				"haxecheckstyle.externalSourceRoots": {
+					"type": "array",
+					"default": [],
+					"description": "Enable checkstyle in source folders outside of your current workspace - haxecheckstyle.sourceFolders still applies"
 				}
 			}
 		},
