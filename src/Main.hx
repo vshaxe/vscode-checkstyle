@@ -11,6 +11,7 @@ class Main {
 	static inline var MAIN_CONFIG_KEY = "haxecheckstyle";
 	static inline var CONFIG_OPTION = "configurationFile";
 	static inline var SOURCE_FOLDERS = "sourceFolders";
+	static inline var EXTERNAL_SOURCE_ROOTS = "externalSourceRoots";
 	static inline var CHECKSTYLE_JSON = "checkstyle.json";
 	static inline var CHECKSTYLE_EXLCUDE_JSON = "checkstyle-excludes.json";
 
@@ -145,6 +146,20 @@ class Main {
 			var workspaceFolder = Vscode.workspace.workspaceFolders[i];
 			if (StringTools.startsWith(fileName, workspaceFolder.uri.fsPath)) {
 				return workspaceFolder.uri.fsPath;
+			}
+		}
+        
+		var configuration = Vscode.workspace.getConfiguration(MAIN_CONFIG_KEY);
+		if (!configuration.has(EXTERNAL_SOURCE_ROOTS)) {
+			return null;
+		}
+		var folders:Array<String> = configuration.get(EXTERNAL_SOURCE_ROOTS);
+		if (folders == null) {
+			return null;
+		}
+		for (folder in folders) {
+			if (StringTools.startsWith(fileName, folder)) {
+				return folder;
 			}
 		}
 		return null;
