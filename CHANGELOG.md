@@ -1,3 +1,8 @@
+### 1.3.0 (February 4, 2019)
+
+- updated haxe-checkstyle to [d020561](https://github.com/HaxeCheckstyle/haxe-checkstyle/commit/d0205619089c981895c9fb1621e5164ffe979def)
+- added a `"haxecheckstyle.externalSourceRoots"` setting ([#14](https://github.com/vshaxe/vscode-checkstyle/pull/14))
+
 ### 1.2.0 (July 9, 2018)
 
 - changed to an empty default config (so a `checkstyle.json` is now always needed)

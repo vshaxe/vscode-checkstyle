@@ -148,7 +148,7 @@ class Main {
 				return workspaceFolder.uri.fsPath;
 			}
 		}
-        
+
 		var configuration = Vscode.workspace.getConfiguration(MAIN_CONFIG_KEY);
 		if (!configuration.has(EXTERNAL_SOURCE_ROOTS)) {
 			return null;

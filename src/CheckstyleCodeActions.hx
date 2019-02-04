@@ -14,7 +14,8 @@ import vscode.WorkspaceEdit;
 class CheckstyleCodeActions {
 	public function new() {}
 
-	public function provideCodeActions(document:TextDocument, range:Range, context:CodeActionContext, token:CancellationToken):ProviderResult<Array<EitherType<Command, CodeAction>>> {
+	public function provideCodeActions(document:TextDocument, range:Range, context:CodeActionContext,
+			token:CancellationToken):ProviderResult<Array<EitherType<Command, CodeAction>>> {
 		var commands:Array<EitherType<Command, CodeAction>> = [];
 
 		var actions:Map<String, CodeAction> = new Map<String, CodeAction>();
