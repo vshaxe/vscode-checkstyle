@@ -42,7 +42,7 @@
 				"haxecheckstyle.configurationFile": {
 					"type": "string",
 					"default": "",
-					"description": "Configuration file for the code style check"
+					"markdownDescription": "Configuration file for the code style check"
 				},
 				"haxecheckstyle.sourceFolders": {
 					"type": "array",
@@ -50,12 +50,12 @@
 						"src",
 						"Source"
 					],
-					"description": "Source folders for code style check"
+					"markdownDescription": "Source folders for code style check"
 				},
 				"haxecheckstyle.externalSourceRoots": {
 					"type": "array",
 					"default": [],
-					"description": "Enable checkstyle in source folders outside of your current workspace - haxecheckstyle.sourceFolders still applies"
+					"markdownDescription": "Enable checkstyle in source folders outside of your current workspace - `\"haxecheckstyle.sourceFolders\"` still applies"
 				}
 			}
 		},
