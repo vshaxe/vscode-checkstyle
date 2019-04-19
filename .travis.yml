@@ -1,19 +1,14 @@
 language: haxe
+dist: xenial
+haxe:
+  - development
 
-matrix:
-  include:
-    - haxe: 3.4.7
-      install:
-        - yes | haxelib install build.hxml
-        - haxelib git checkstyle https://github.com/HaxeCheckstyle/haxe-checkstyle
-        - haxelib git tokentree https://github.com/HaxeCheckstyle/tokentree master src
-    - haxe: development
-      install:
-        - yes | haxelib install build.hxml
-        - haxelib git checkstyle https://github.com/HaxeCheckstyle/haxe-checkstyle
-        - haxelib git hxparse https://github.com/simn/hxparse
-        - haxelib git haxeparser https://github.com/simn/haxeparser --never
-        - haxelib git tokentree https://github.com/HaxeCheckstyle/tokentree master src
+install:
+  - yes | haxelib install build.hxml
+  - haxelib git checkstyle https://github.com/HaxeCheckstyle/haxe-checkstyle
+  - haxelib git hxparse https://github.com/simn/hxparse
+  - haxelib git haxeparser https://github.com/simn/haxeparser --never
+  - haxelib git tokentree https://github.com/HaxeCheckstyle/tokentree
 
 hxml:
   - build.hxml
