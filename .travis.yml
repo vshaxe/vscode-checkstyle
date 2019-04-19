@@ -1,5 +1,4 @@
 language: haxe
-sudo: false
 
 matrix:
   include:
