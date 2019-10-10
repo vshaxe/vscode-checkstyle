@@ -1,84 +1,84 @@
 {
-	"name": "haxe-checkstyle",
-	"displayName": "Haxe Checkstyle",
-	"version": "1.3.0",
-	"publisher": "vshaxe",
-	"engines": {
-		"vscode": "^1.20.0"
-	},
-	"extensionDependencies": [
-		"nadako.vshaxe"
-	],
-	"license": "MIT",
-	"description": "Linter for Haxe files",
-	"categories": [
-		"Linters"
-	],
-	"galleryBanner": {
-		"theme": "dark",
-		"color": "#A84B38"
-	},
-	"badges": [
-		{
-			"url": "https://api.travis-ci.org/vshaxe/vscode-checkstyle.svg?branch=master",
-			"href": "https://travis-ci.org/vshaxe/vscode-checkstyle",
-			"description": "Travis CI Status"
-		}
-	],
-	"icon": "logo.png",
-	"keywords": [
-		"haxe"
-	],
-	"bugs": "https://github.com/vshaxe/vscode-checkstyle/issues",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/vshaxe/vscode-checkstyle"
-	},
-	"main": "bin/main.js",
-	"contributes": {
-		"configuration": {
-			"title": "Haxe Checkstyle",
-			"properties": {
-				"haxecheckstyle.configurationFile": {
-					"type": "string",
-					"default": "",
-					"markdownDescription": "Configuration file for the code style check"
-				},
-				"haxecheckstyle.sourceFolders": {
-					"type": "array",
-					"default": [
-						"src",
-						"Source"
-					],
-					"markdownDescription": "Source folders for code style check"
-				},
-				"haxecheckstyle.externalSourceRoots": {
-					"type": "array",
-					"default": [],
-					"markdownDescription": "Enable checkstyle in source folders outside of your current workspace - `\"haxecheckstyle.sourceFolders\"` still applies"
-				}
-			}
-		},
-		"jsonValidation": [
-			{
-				"fileMatch": "checkstyle.json",
-				"url": "./resources/checkstyle-schema.json"
-			},
-			{
-				"fileMatch": "checkstyle-excludes.json",
-				"url": "./resources/checkstyle-excludes-schema.json"
-			}
-		]
-	},
-	"activationEvents": [
-		"onLanguage:haxe"
-	],
-	"scripts": {
-		"vscode:prepublish": "haxe build.hxml"
-	},
-	"__metadata": {
-		"id": "113ab80b-c5a1-47db-85f2-ee8691688408",
-		"publisherDisplayName": "Haxe Foundation",
-		"publisherId": "bdf58939-bf37-40d4-9543-90fcc14fd490"
-	}
+    "name": "haxe-checkstyle",
+    "displayName": "Haxe Checkstyle",
+    "version": "1.3.0",
+    "publisher": "vshaxe",
+    "engines": {
+        "vscode": "^1.20.0"
+    },
+    "extensionDependencies": [
+        "nadako.vshaxe"
+    ],
+    "license": "MIT",
+    "description": "Linter for Haxe files",
+    "categories": [
+        "Linters"
+    ],
+    "galleryBanner": {
+        "theme": "dark",
+        "color": "#A84B38"
+    },
+    "badges": [{
+        "url": "https://api.travis-ci.org/vshaxe/vscode-checkstyle.svg?branch=master",
+        "href": "https://travis-ci.org/vshaxe/vscode-checkstyle",
+        "description": "Travis CI Status"
+    }],
+    "devDependencies": {
+        "lix": "^15.5.4"
+    },
+    "icon": "logo.png",
+    "keywords": [
+        "haxe"
+    ],
+    "bugs": "https://github.com/vshaxe/vscode-checkstyle/issues",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vshaxe/vscode-checkstyle"
+    },
+    "main": "bin/main.js",
+    "contributes": {
+        "configuration": {
+            "title": "Haxe Checkstyle",
+            "properties": {
+                "haxecheckstyle.configurationFile": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Configuration file for the code style check"
+                },
+                "haxecheckstyle.sourceFolders": {
+                    "type": "array",
+                    "default": [
+                        "src",
+                        "Source"
+                    ],
+                    "markdownDescription": "Source folders for code style check"
+                },
+                "haxecheckstyle.externalSourceRoots": {
+                    "type": "array",
+                    "default": [],
+                    "markdownDescription": "Enable checkstyle in source folders outside of your current workspace - `\"haxecheckstyle.sourceFolders\"` still applies"
+                }
+            }
+        },
+        "jsonValidation": [{
+                "fileMatch": "checkstyle.json",
+                "url": "./resources/checkstyle-schema.json"
+            },
+            {
+                "fileMatch": "checkstyle-excludes.json",
+                "url": "./resources/checkstyle-excludes-schema.json"
+            }
+        ]
+    },
+    "activationEvents": [
+        "onLanguage:haxe"
+    ],
+    "scripts": {
+        "vscode:prepublish": "haxe build.hxml"
+    },
+    "__metadata": {
+        "id": "113ab80b-c5a1-47db-85f2-ee8691688408",
+        "publisherDisplayName": "Haxe Foundation",
+        "publisherId": "bdf58939-bf37-40d4-9543-90fcc14fd490"
+    }
 }

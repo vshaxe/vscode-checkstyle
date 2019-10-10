@@ -3,11 +3,12 @@
 -lib vscode
 -cp src
 -js bin/main.js
+-D js-es=6
 Main
 
 # checkstyle
 -lib haxeparser
--lib compiletime:2.6.0
+-lib compiletime
 -lib hxargs
 -lib checkstyle
 -lib tokentree

@@ -1,2 +1,3 @@
 bin/
 .haxelib/
+node_modules/

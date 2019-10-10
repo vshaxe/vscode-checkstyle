@@ -1,0 +1,7 @@
+-D jstack=2.3.12
+# @install: lix --silent download "haxelib:/jstack#2.3.12" into jstack/2.3.12/haxelib
+-lib sourcemap
+-cp ${HAXE_LIBCACHE}/jstack/2.3.12/haxelib/src
+--macro include('jstack.JStack')
+--macro keep('jstack.JStack')
+--macro jstack.Tools.initialize()
