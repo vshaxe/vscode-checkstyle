@@ -1,3 +1,7 @@
+### 1.4.0 (October 11, 2019)
+
+- updated haxe-checkstyle to 2.5.0
+
 ### 1.3.0 (February 4, 2019)
 
 - updated haxe-checkstyle to [d020561](https://github.com/HaxeCheckstyle/haxe-checkstyle/commit/d0205619089c981895c9fb1621e5164ffe979def)
