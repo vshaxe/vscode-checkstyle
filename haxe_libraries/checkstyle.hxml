@@ -1,4 +1,3 @@
 -D checkstyle=2.5.0
-# @install: lix --silent download "haxelib:/checkstyle#2.5.0" into checkstyle/2.5.0/haxelib
-# @run: haxelib run-dir checkstyle ${HAXE_LIBCACHE}/checkstyle/2.5.0/haxelib
--cp ${HAXE_LIBCACHE}/checkstyle/2.5.0/haxelib/src
+# @install: lix --silent download "gh://github.com/HaxeCheckstyle/haxe-checkstyle#610fa32262be488283f9e6b7ddbd32c5825a5ba3" into checkstyle/2.5.0/github/610fa32262be488283f9e6b7ddbd32c5825a5ba3
+-cp ${HAXE_LIBCACHE}/checkstyle/2.5.0/github/610fa32262be488283f9e6b7ddbd32c5825a5ba3/src

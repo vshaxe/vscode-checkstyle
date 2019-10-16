@@ -1,3 +1,4 @@
+import checkstyle.checks.coding.CodeSimilarityCheck;
 import checkstyle.reporter.ReporterManager;
 import checkstyle.config.Config;
 import checkstyle.config.ConfigParser;
@@ -54,6 +55,8 @@ class Main {
 		}
 
 		ExcludeManager.INSTANCE.clear();
+		CodeSimilarityCheck.IDENTICAL_HASHES.clear();
+		CodeSimilarityCheck.SIMILAR_HASHES.clear();
 
 		loadConfig(checker, fileName, rootFolder);
 
