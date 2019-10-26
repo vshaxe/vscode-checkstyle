@@ -23,13 +23,10 @@ class CheckstyleCodeActions {
 			if (diag.source != "checkstyle") {
 				continue;
 			}
-			if (range.contains(diag.range)) {
-				makeCheckAction(document, actions, diag);
+			if (range.intersection(diag.range) == null) {
 				continue;
 			}
-			if (diag.range.contains(range)) {
-				makeCheckAction(document, actions, diag);
-			}
+			makeCheckAction(document, actions, diag);
 		}
 
 		for (name in actions.keys()) {

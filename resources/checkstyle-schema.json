@@ -223,6 +223,58 @@
             },
             "type": "object"
         },
+        "ArrowFunctionCheck": {
+            "description": "Checks for use of curlies, nested (non-arrow) functions or returns in arrow functions.",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "description": "Checks for use of curlies, nested (non-arrow) functions or returns in arrow functions.",
+                    "type": "string",
+                    "enum": [
+                        "ArrowFunction"
+                    ]
+                },
+                "props": {
+                    "description": "Checks for use of curlies, nested (non-arrow) functions or returns in arrow functions.",
+                    "additionalProperties": false,
+                    "properties": {
+                        "allowFunction": {
+                            "description": "allow using `function` inside arrow function bodies",
+                            "type": "boolean",
+                            "propertyOrder": 1
+                        },
+                        "allowReturn": {
+                            "description": "allow using `return` inside arrow function bodies",
+                            "type": "boolean",
+                            "propertyOrder": 0
+                        },
+                        "allowSingleArgParens": {
+                            "description": "allow using parenthesis around single argument arrow function (`(arg) -> arg * 2`)",
+                            "type": "boolean",
+                            "propertyOrder": 3
+                        },
+                        "severity": {
+                            "description": "sets gravity of reported violations:\n\t- IGNORE = do not report violations, violations do not appear anywhere in output\n\t- INFO = all violations have info / lowest priority\n\t- WARNING = all violations have warning / medium priority\n\t- ERROR = all violations have error / highest priority",
+                            "type": "string",
+                            "enum": [
+                                "INFO",
+                                "WARNING",
+                                "ERROR",
+                                "IGNORE"
+                            ],
+                            "propertyOrder": 4
+                        },
+                        "allowCurlyBody": {
+                            "description": "allow using curly block as arrow function body (`{...}`)",
+                            "type": "boolean",
+                            "propertyOrder": 2
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
         "UnusedLocalVarCheck": {
             "description": "Checks for unused local variables.",
             "additionalProperties": false,
@@ -1721,6 +1773,43 @@
             },
             "type": "object"
         },
+        "EnforceVarTypeHintCheck": {
+            "description": "Checks if all variables have type hint.",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "description": "Checks if all variables have type hint.",
+                    "type": "string",
+                    "enum": [
+                        "EnforceVarTypeHint"
+                    ]
+                },
+                "props": {
+                    "description": "Checks if all variables have type hint.",
+                    "additionalProperties": false,
+                    "properties": {
+                        "ignoreEnumAbstractValues": {
+                            "description": "ignores fields inside abstract enums",
+                            "type": "boolean",
+                            "propertyOrder": 0
+                        },
+                        "severity": {
+                            "description": "sets gravity of reported violations:\n\t- IGNORE = do not report violations, violations do not appear anywhere in output\n\t- INFO = all violations have info / lowest priority\n\t- WARNING = all violations have warning / medium priority\n\t- ERROR = all violations have error / highest priority",
+                            "type": "string",
+                            "enum": [
+                                "INFO",
+                                "WARNING",
+                                "ERROR",
+                                "IGNORE"
+                            ],
+                            "propertyOrder": 1
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
         "SimplifyBooleanReturnCheck": {
             "description": "Checks for over-complicated boolean return statements.",
             "additionalProperties": false,
@@ -2689,6 +2778,43 @@
             },
             "type": "object"
         },
+        "NestedControlFlowCheck": {
+            "description": "Checks for maximium nesting depth of control flow expressions (`if`, `for`, `while`, `do/while`, `switch` and `try`).",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "description": "Checks for maximium nesting depth of control flow expressions (`if`, `for`, `while`, `do/while`, `switch` and `try`).",
+                    "type": "string",
+                    "enum": [
+                        "NestedControlFlow"
+                    ]
+                },
+                "props": {
+                    "description": "Checks for maximium nesting depth of control flow expressions (`if`, `for`, `while`, `do/while`, `switch` and `try`).",
+                    "additionalProperties": false,
+                    "properties": {
+                        "max": {
+                            "description": "maximum number of nested control flow expressions allowed",
+                            "type": "integer",
+                            "propertyOrder": 0
+                        },
+                        "severity": {
+                            "description": "sets gravity of reported violations:\n\t- IGNORE = do not report violations, violations do not appear anywhere in output\n\t- INFO = all violations have info / lowest priority\n\t- WARNING = all violations have warning / medium priority\n\t- ERROR = all violations have error / highest priority",
+                            "type": "string",
+                            "enum": [
+                                "INFO",
+                                "WARNING",
+                                "ERROR",
+                                "IGNORE"
+                            ],
+                            "propertyOrder": 1
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
         "EmptyLinesCheck": {
             "description": "Checks for consecutive empty lines (default is 1). Also have options to check empty line separators after package, single-line and multi-line comments and class/interface/abstract declarations.",
             "additionalProperties": false,
@@ -2922,34 +3048,38 @@
                 },
                 "UnusedImport": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 74
+                    "propertyOrder": 78
                 },
                 "Dynamic": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 17
+                    "propertyOrder": 19
                 },
                 "MultipleStringLiterals": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 42
+                    "propertyOrder": 45
+                },
+                "EnforceVarTypeHint": {
+                    "$ref": "#/definitions/ExcludeFilterList",
+                    "propertyOrder": 24
                 },
                 "NeedBraces": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 44
+                    "propertyOrder": 47
                 },
                 "SeparatorWhitespace": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 60
+                    "propertyOrder": 64
                 },
                 "all": {
                     "$ref": "#/definitions/ExcludeFilterList"
                 },
                 "LocalVariableName": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 35
+                    "propertyOrder": 38
                 },
                 "NestedForDepth": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 45
+                    "propertyOrder": 49
                 },
                 "Anonymous": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -2957,99 +3087,103 @@
                 },
                 "MultipleVariableDeclarations": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 43
+                    "propertyOrder": 46
                 },
                 "NestedTryDepth": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 47
+                    "propertyOrder": 51
                 },
                 "BlockBreakingConditional": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 9
+                    "propertyOrder": 11
                 },
                 "CatchParameterName": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 10
+                    "propertyOrder": 12
                 },
                 "EmptyBlock": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 19
+                    "propertyOrder": 21
                 },
                 "ExtendedEmptyLines": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 22
+                    "propertyOrder": 25
                 },
                 "ReturnCount": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 58
+                    "propertyOrder": 62
                 },
                 "DefaultComesLast": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 15
+                    "propertyOrder": 17
                 },
                 "HexadecimalLiteral": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 25
+                    "propertyOrder": 28
                 },
                 "WhitespaceAfter": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 77
+                    "propertyOrder": 81
                 },
                 "ConstantName": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 13
+                    "propertyOrder": 15
                 },
                 "EmptyPackage": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 21
+                    "propertyOrder": 23
                 },
                 "Interface": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 31
+                    "propertyOrder": 34
                 },
                 "WhitespaceAround": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 78
+                    "propertyOrder": 82
                 },
                 "NestedIfDepth": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 46
+                    "propertyOrder": 50
                 },
                 "ParameterName": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 51
+                    "propertyOrder": 55
                 },
                 "NullableParameter": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 48
+                    "propertyOrder": 52
                 },
                 "InlineFinal": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 29
+                    "propertyOrder": 32
                 },
                 "AvoidStarImport": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 7
+                    "propertyOrder": 9
                 },
                 "SeparatorWrap": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 61
+                    "propertyOrder": 65
+                },
+                "AvoidIdentifier": {
+                    "$ref": "#/definitions/ExcludeFilterList",
+                    "propertyOrder": 8
                 },
                 "RedundantAllowMeta": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 55
+                    "propertyOrder": 59
                 },
                 "HiddenField": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 26
+                    "propertyOrder": 29
                 },
                 "UnnecessaryConstructor": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 73
+                    "propertyOrder": 77
                 },
                 "SimplifyBooleanExpression": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 62
+                    "propertyOrder": 66
                 },
                 "path": {
                     "description": "filters excludes relative to\n\t- RELATIVE_TO_PROJECT = use project root\n\t- RELATIVE_TO_SOURCE = use path(s) specified via \"-s <path>\" command line switches",
@@ -3061,67 +3195,71 @@
                 },
                 "MethodCount": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 38
+                    "propertyOrder": 41
                 },
                 "UnusedLocalVar": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 75
+                    "propertyOrder": 79
                 },
                 "TabForAligning": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 67
+                    "propertyOrder": 71
                 },
                 "MethodName": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 40
+                    "propertyOrder": 43
                 },
                 "RightCurly": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 59
+                    "propertyOrder": 63
                 },
                 "AvoidTernaryOperator": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 8
+                    "propertyOrder": 10
                 },
                 "ParameterNumber": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 52
+                    "propertyOrder": 56
+                },
+                "ArrowFunction": {
+                    "$ref": "#/definitions/ExcludeFilterList",
+                    "propertyOrder": 7
                 },
                 "MethodLength": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 39
+                    "propertyOrder": 42
                 },
                 "ConditionalCompilation": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 12
+                    "propertyOrder": 14
                 },
                 "EmptyLines": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 20
+                    "propertyOrder": 22
                 },
                 "MemberName": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 37
+                    "propertyOrder": 40
                 },
                 "ERegLiteral": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 18
+                    "propertyOrder": 20
                 },
                 "RedundantModifier": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 56
+                    "propertyOrder": 60
                 },
                 "Type": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 70
+                    "propertyOrder": 74
                 },
                 "TypeName": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 72
+                    "propertyOrder": 76
                 },
                 "Indentation": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 27
+                    "propertyOrder": 30
                 },
                 "version": {
                     "maximum": 1,
@@ -3130,31 +3268,35 @@
                 },
                 "Return": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 57
+                    "propertyOrder": 61
                 },
                 "SimplifyBooleanReturn": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 63
+                    "propertyOrder": 67
                 },
                 "TODOComment": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 66
+                    "propertyOrder": 70
+                },
+                "NestedControlFlow": {
+                    "$ref": "#/definitions/ExcludeFilterList",
+                    "propertyOrder": 48
                 },
                 "OperatorWhitespace": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 49
+                    "propertyOrder": 53
                 },
                 "Spacing": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 64
+                    "propertyOrder": 68
                 },
                 "IndentationCharacter": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 28
+                    "propertyOrder": 31
                 },
                 "MagicNumber": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 36
+                    "propertyOrder": 39
                 },
                 "ArrayLiteral": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3162,35 +3304,35 @@
                 },
                 "TrailingWhitespace": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 69
+                    "propertyOrder": 73
                 },
                 "VariableInitialisation": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 76
+                    "propertyOrder": 80
                 },
                 "LineLength": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 33
+                    "propertyOrder": 36
                 },
                 "ListenerName": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 34
+                    "propertyOrder": 37
                 },
                 "FileLength": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 24
+                    "propertyOrder": 27
                 },
                 "CyclomaticComplexity": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 14
+                    "propertyOrder": 16
                 },
                 "StringLiteral": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 65
+                    "propertyOrder": 69
                 },
                 "Trace": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 68
+                    "propertyOrder": 72
                 },
                 "ArrayAccess": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3198,43 +3340,43 @@
                 },
                 "PublicAccessor": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 53
+                    "propertyOrder": 57
                 },
                 "DocCommentStyle": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 16
+                    "propertyOrder": 18
                 },
                 "InnerAssignment": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 30
+                    "propertyOrder": 33
                 },
                 "RedundantAccessMeta": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 54
+                    "propertyOrder": 58
                 },
                 "CodeSimilarity": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 11
+                    "propertyOrder": 13
                 },
                 "OperatorWrap": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 50
+                    "propertyOrder": 54
                 },
                 "TypeDocComment": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 71
+                    "propertyOrder": 75
                 },
                 "LeftCurly": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 32
+                    "propertyOrder": 35
                 },
                 "ModifierOrder": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 41
+                    "propertyOrder": 44
                 },
                 "FieldDocComment": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 23
+                    "propertyOrder": 26
                 }
             },
             "type": "object"
@@ -3812,6 +3954,46 @@
             },
             "type": "object"
         },
+        "AvoidIdentifierCheck": {
+            "description": "Checks for identifiers to avoid.",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "description": "Checks for identifiers to avoid.",
+                    "type": "string",
+                    "enum": [
+                        "AvoidIdentifier"
+                    ]
+                },
+                "props": {
+                    "description": "Checks for identifiers to avoid.",
+                    "additionalProperties": false,
+                    "properties": {
+                        "severity": {
+                            "description": "sets gravity of reported violations:\n\t- IGNORE = do not report violations, violations do not appear anywhere in output\n\t- INFO = all violations have info / lowest priority\n\t- WARNING = all violations have warning / medium priority\n\t- ERROR = all violations have error / highest priority",
+                            "type": "string",
+                            "enum": [
+                                "INFO",
+                                "WARNING",
+                                "ERROR",
+                                "IGNORE"
+                            ],
+                            "propertyOrder": 1
+                        },
+                        "avoidIdentifiers": {
+                            "description": "list of identifiers to avoid",
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array",
+                            "propertyOrder": 0
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
         "NeedBracesCheck": {
             "description": "Checks for braces on function, if, for and while statements. It has an option to allow single line statements without braces using property `allowSingleLineStatement` like `if (b) return 10;`.",
             "additionalProperties": false,
@@ -4050,6 +4232,12 @@
                                 "$ref": "#/definitions/ArrayLiteralCheck"
                             },
                             {
+                                "$ref": "#/definitions/ArrowFunctionCheck"
+                            },
+                            {
+                                "$ref": "#/definitions/AvoidIdentifierCheck"
+                            },
+                            {
                                 "$ref": "#/definitions/AvoidStarImportCheck"
                             },
                             {
@@ -4093,6 +4281,9 @@
                             },
                             {
                                 "$ref": "#/definitions/EmptyPackageCheck"
+                            },
+                            {
+                                "$ref": "#/definitions/EnforceVarTypeHintCheck"
                             },
                             {
                                 "$ref": "#/definitions/ExtendedEmptyLinesCheck"
@@ -4162,6 +4353,9 @@
                             },
                             {
                                 "$ref": "#/definitions/NeedBracesCheck"
+                            },
+                            {
+                                "$ref": "#/definitions/NestedControlFlowCheck"
                             },
                             {
                                 "$ref": "#/definitions/NestedForDepthCheck"
