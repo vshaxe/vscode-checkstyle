@@ -1,3 +1,8 @@
+### 1.5.0 (December 1, 2019)
+
+- updated haxe-checkstyle to 2.6.0
+- added `"haxecheckstyle.codeSimilarityBufferSize"` setting to limit CodeSimilarity buffer size (defaults to: 100)
+
 ### 1.4.0 (October 11, 2019)
 
 - updated haxe-checkstyle to 2.5.0

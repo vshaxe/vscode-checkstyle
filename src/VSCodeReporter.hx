@@ -1,7 +1,7 @@
 import checkstyle.CheckMessage;
 import checkstyle.reporter.BaseReporter;
-import vscode.Range;
 import vscode.Diagnostic;
+import vscode.Range;
 
 class VSCodeReporter extends BaseReporter {
 	public var diagnostics:Array<Diagnostic> = [];

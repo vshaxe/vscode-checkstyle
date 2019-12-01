@@ -910,6 +910,11 @@
                                 "ERROR",
                                 "IGNORE"
                             ],
+                            "propertyOrder": 2
+                        },
+                        "ignoreEmptyLines": {
+                            "description": "ignores or includes empty lines when counting total file length",
+                            "type": "boolean",
                             "propertyOrder": 1
                         }
                     },
@@ -1655,38 +1660,6 @@
                 },
                 "props": {
                     "description": "Detects ternary operators. Useful for developers who find ternary operators hard to read and want forbid them.",
-                    "additionalProperties": false,
-                    "properties": {
-                        "severity": {
-                            "description": "sets gravity of reported violations:\n\t- IGNORE = do not report violations, violations do not appear anywhere in output\n\t- INFO = all violations have info / lowest priority\n\t- WARNING = all violations have warning / medium priority\n\t- ERROR = all violations have error / highest priority",
-                            "type": "string",
-                            "enum": [
-                                "INFO",
-                                "WARNING",
-                                "ERROR",
-                                "IGNORE"
-                            ],
-                            "propertyOrder": 0
-                        }
-                    },
-                    "type": "object"
-                }
-            },
-            "type": "object"
-        },
-        "InlineFinalCheck": {
-            "description": "Checks for places that use inline var instead of inline final (Haxe 4+).",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "description": "Checks for places that use inline var instead of inline final (Haxe 4+).",
-                    "type": "string",
-                    "enum": [
-                        "InlineFinal"
-                    ]
-                },
-                "props": {
-                    "description": "Checks for places that use inline var instead of inline final (Haxe 4+).",
                     "additionalProperties": false,
                     "properties": {
                         "severity": {
@@ -3054,6 +3027,10 @@
                     "$ref": "#/definitions/ExcludeFilterList",
                     "propertyOrder": 19
                 },
+                "Final": {
+                    "$ref": "#/definitions/ExcludeFilterList",
+                    "propertyOrder": 28
+                },
                 "MultipleStringLiterals": {
                     "$ref": "#/definitions/ExcludeFilterList",
                     "propertyOrder": 45
@@ -3119,7 +3096,7 @@
                 },
                 "HexadecimalLiteral": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 28
+                    "propertyOrder": 29
                 },
                 "WhitespaceAfter": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3153,10 +3130,6 @@
                     "$ref": "#/definitions/ExcludeFilterList",
                     "propertyOrder": 52
                 },
-                "InlineFinal": {
-                    "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 32
-                },
                 "AvoidStarImport": {
                     "$ref": "#/definitions/ExcludeFilterList",
                     "propertyOrder": 9
@@ -3175,7 +3148,7 @@
                 },
                 "HiddenField": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 29
+                    "propertyOrder": 30
                 },
                 "UnnecessaryConstructor": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3259,7 +3232,7 @@
                 },
                 "Indentation": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 30
+                    "propertyOrder": 31
                 },
                 "version": {
                     "maximum": 1,
@@ -3292,7 +3265,7 @@
                 },
                 "IndentationCharacter": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 31
+                    "propertyOrder": 32
                 },
                 "MagicNumber": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3513,12 +3486,12 @@
                     "additionalProperties": false,
                     "properties": {
                         "thresholdSimilar": {
-                            "description": "threshold for similar code blocks",
+                            "description": "maximum number of tokens allowed before detecting similar code blocks",
                             "type": "integer",
                             "propertyOrder": 2
                         },
                         "thresholdIdentical": {
-                            "description": "threshold for identical code blocks",
+                            "description": "maximum number of tokens allowed before detecting identical code blocks",
                             "type": "integer",
                             "propertyOrder": 1
                         },
@@ -3704,6 +3677,38 @@
                                 "IGNORE"
                             ],
                             "propertyOrder": 3
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+        "FinalCheck": {
+            "description": "Checks for places that use var instead of final (Haxe 4+).",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "description": "Checks for places that use var instead of final (Haxe 4+).",
+                    "type": "string",
+                    "enum": [
+                        "Final"
+                    ]
+                },
+                "props": {
+                    "description": "Checks for places that use var instead of final (Haxe 4+).",
+                    "additionalProperties": false,
+                    "properties": {
+                        "severity": {
+                            "description": "sets gravity of reported violations:\n\t- IGNORE = do not report violations, violations do not appear anywhere in output\n\t- INFO = all violations have info / lowest priority\n\t- WARNING = all violations have warning / medium priority\n\t- ERROR = all violations have error / highest priority",
+                            "type": "string",
+                            "enum": [
+                                "INFO",
+                                "WARNING",
+                                "ERROR",
+                                "IGNORE"
+                            ],
+                            "propertyOrder": 0
                         }
                     },
                     "type": "object"
@@ -3927,11 +3932,6 @@
                     "description": "Checks for long methods. If a method becomes very long it is hard to understand. Therefore long methods should usually be refactored into several individual methods that focus on a specific task.",
                     "additionalProperties": false,
                     "properties": {
-                        "countEmpty": {
-                            "description": "maximum includes empty lines / should ignore empty lines",
-                            "type": "boolean",
-                            "propertyOrder": 1
-                        },
                         "max": {
                             "description": "maximum number of lines per method (default: 50)",
                             "type": "integer",
@@ -3947,6 +3947,11 @@
                                 "IGNORE"
                             ],
                             "propertyOrder": 2
+                        },
+                        "ignoreEmptyLines": {
+                            "description": "ignores or includes empty lines when counting method length",
+                            "type": "boolean",
+                            "propertyOrder": 1
                         }
                     },
                     "type": "object"
@@ -4295,6 +4300,9 @@
                                 "$ref": "#/definitions/FileLengthCheck"
                             },
                             {
+                                "$ref": "#/definitions/FinalCheck"
+                            },
+                            {
                                 "$ref": "#/definitions/HexadecimalLiteralCheck"
                             },
                             {
@@ -4305,9 +4313,6 @@
                             },
                             {
                                 "$ref": "#/definitions/IndentationCharacterCheck"
-                            },
-                            {
-                                "$ref": "#/definitions/InlineFinalCheck"
                             },
                             {
                                 "$ref": "#/definitions/InnerAssignmentCheck"

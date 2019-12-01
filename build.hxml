@@ -4,6 +4,7 @@
 -cp src
 -js bin/main.js
 -D js-es=6
+-D use_similarity_ringbuffer
 Main
 
 # checkstyle

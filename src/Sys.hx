@@ -7,8 +7,8 @@ package;
  *
  * Original: https://github.com/HaxeFoundation/hxnodejs/blob/master/src/Sys.hx
  */
-import js.node.ChildProcess;
 import js.Node.process;
+import js.node.ChildProcess;
 
 @:dce
 // @:coreApi

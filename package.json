@@ -59,6 +59,11 @@
                     "type": "array",
                     "default": [],
                     "markdownDescription": "Enable checkstyle in source folders outside of your current workspace - `\"haxecheckstyle.sourceFolders\"` still applies"
+                },
+                "haxecheckstyle.codeSimilarityBufferSize": {
+                    "type": "integer",
+                    "default": 100,
+                    "markdownDescription": "max number of files to keep in memory for CodeSimilarity check"
                 }
             }
         },

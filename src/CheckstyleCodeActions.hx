@@ -181,7 +181,7 @@ class CheckstyleCodeActions {
 	}
 }
 
-@:enum abstract CheckNames(String) from String {
+enum abstract CheckNames(String) from String {
 	var DynamicCheck = "Dynamic";
 	var EmptyPackageCheck = "EmptyPackage";
 	var IndentationCheck = "Indentation";

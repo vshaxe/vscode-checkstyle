@@ -1,18 +1,19 @@
+import haxe.io.Path;
 import checkstyle.checks.coding.CodeSimilarityCheck;
-import checkstyle.reporter.ReporterManager;
 import checkstyle.config.Config;
 import checkstyle.config.ConfigParser;
 import checkstyle.config.ExcludeManager;
-import haxe.io.Path;
+import checkstyle.reporter.ReporterManager;
+import vscode.DiagnosticCollection;
 import vscode.ExtensionContext;
 import vscode.TextDocument;
-import vscode.DiagnosticCollection;
 
 class Main {
 	static inline var MAIN_CONFIG_KEY = "haxecheckstyle";
 	static inline var CONFIG_OPTION = "configurationFile";
 	static inline var SOURCE_FOLDERS = "sourceFolders";
 	static inline var EXTERNAL_SOURCE_ROOTS = "externalSourceRoots";
+	static inline var CODE_SIMILARITY_BUFFER_SIZE = "codeSimilarityBufferSize";
 	static inline var CHECKSTYLE_JSON = "checkstyle.json";
 	static inline var CHECKSTYLE_EXLCUDE_JSON = "checkstyle-excludes.json";
 
@@ -53,10 +54,15 @@ class Main {
 		if (!fileInSourcePaths(fileName, rootFolder, checker.configParser.paths)) {
 			return;
 		}
+		var configuration = Vscode.workspace.getConfiguration(MAIN_CONFIG_KEY);
+		var codeSimilariyBufferSize:Int = 100;
+		if (configuration.has(CODE_SIMILARITY_BUFFER_SIZE)) {
+			codeSimilariyBufferSize = configuration.get(CODE_SIMILARITY_BUFFER_SIZE);
+		}
 
 		ExcludeManager.INSTANCE.clear();
-		CodeSimilarityCheck.IDENTICAL_HASHES.clear();
-		CodeSimilarityCheck.SIMILAR_HASHES.clear();
+		CodeSimilarityCheck.cleanupRingBuffer(codeSimilariyBufferSize);
+		CodeSimilarityCheck.cleanupFile(fileName);
 
 		loadConfig(checker, fileName, rootFolder);
 
