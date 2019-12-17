@@ -47,8 +47,12 @@ class CheckstyleCodeActions {
 				makeDynamicAction(document, actions, diag, message);
 			case EmptyPackageCheck:
 				makeEmptyPackageAction(document, actions, diag, message);
+			case FinalCheck:
+				makeFinalAction(document, actions, diag, message);
 			case IndentationCheck:
 				makeIndentationAction(document, actions, diag, message);
+			case ModifierOrderCheck:
+				makeModifierOrderAction(document, actions, diag, message);
 			case RedundantModifierCheck:
 				makeRedundantModifierAction(document, actions, diag, message);
 			case StringLiteralCheck:
@@ -75,6 +79,27 @@ class CheckstyleCodeActions {
 		}
 	}
 
+	function makeFinalAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
+		var code:checkstyle.checks.modifier.FinalCheck.FinalCode = cast diag.code;
+		switch (code) {
+			case USE_INLINE_FINAL:
+				var modifierRange = new Range(diag.range.start, diag.range.start.translate(0, 3));
+				replaceAction(actions, "Change to final", document, modifierRange, diag, "final");
+			case SHOULD_BE_PUBLIC_FINAL:
+				var modifierRange = new Range(diag.range.start, diag.range.start.translate(0, 3));
+				replaceAction(actions, "Change to final", document, modifierRange, diag, "final");
+
+				var line = document.lineAt(diag.range.start);
+				var index = line.text.indexOf("public ");
+				if (index < 0) {
+					return;
+				}
+				var modifierPos = document.positionAt(document.offsetAt(line.range.start) + index);
+				modifierRange = new Range(modifierPos, modifierPos.translate(0, 6));
+				replaceAction(actions, "Change to private", document, modifierRange, diag, "private");
+		}
+	}
+
 	function makeIndentationAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
 		var reg = ~/expected: "([^"]+)"/;
 		if (!reg.match(message)) {
@@ -83,6 +108,23 @@ class CheckstyleCodeActions {
 		var replace = reg.matched(1);
 		replace = StringTools.replace(replace, "\\t", "\t");
 		replaceAction(actions, "Fix indentation", document, diag.range, diag, replace);
+	}
+
+	function makeModifierOrderAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
+		var reg = ~/ is "([^"]+)" but should be "([^"]+)"/;
+		if (!reg.match(message)) {
+			return;
+		}
+		var actual = reg.matched(1);
+		var expected = reg.matched(2);
+		var line = document.lineAt(diag.range.start);
+		var index = line.text.indexOf(actual + " ");
+		if (index < 0) {
+			return;
+		}
+		var startPos = document.positionAt(document.offsetAt(line.range.start) + index);
+		var modifierRange = new Range(startPos, startPos.translate(0, actual.length));
+		replaceAction(actions, "Adjust modifier order", document, modifierRange, diag, expected);
 	}
 
 	function makeRedundantModifierAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
@@ -184,7 +226,9 @@ class CheckstyleCodeActions {
 enum abstract CheckNames(String) from String {
 	var DynamicCheck = "Dynamic";
 	var EmptyPackageCheck = "EmptyPackage";
+	var FinalCheck = "Final";
 	var IndentationCheck = "Indentation";
+	var ModifierOrderCheck = "ModifierOrder";
 	var RedundantModifierCheck = "RedundantModifier";
 	var StringLiteralCheck = "StringLiteral";
 	var TraceCheckCheck = "Trace";

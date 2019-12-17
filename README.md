@@ -22,6 +22,8 @@ That way you can have a library folder inside your workspace provide its own `ch
 
 If there is no `checkstyle.json` in any folders up to your workspace root, vscode-checkstyle tries to learn its location by reading key `haxecheckstyle.configurationFile` from your VS Code settings.
 
+`haxecheckstyle.codeSimilarityBufferSize` sets a limit to how many files will be kept for CodeSimilarity check (Defaults to 100).
+
 ## Quickfixes
 
 You can apply quickfixes one at a time or by selecting a range including multiple checkstyle violations.
@@ -29,13 +31,16 @@ You can apply quickfixes one at a time or by selecting a range including multipl
 ![RedundantModifierQuickfixes](resources/RedundantModifierQuickfixes.gif)
 
 The following checks provide quickfixes:
-- Dynamic
-- EmptyPackage
-- Indentation
-- RedundantModifier
-- StringLiteral
-- Trace
-- UnusedImport
+
+* Dynamic
+* EmptyPackage
+* Final
+* Indentation
+* ModifierOrder
+* RedundantModifier
+* StringLiteral
+* Trace
+* UnusedImport
 
 ## JSON Schema Definitions
 
@@ -46,6 +51,11 @@ vscode-checkstyle comes with JSON schemas for `checkstyle.json` and `checkstyle-
 ## Documentation
 
 See [Haxe-Checkstyle docs](http://haxecheckstyle.github.io/docs) or use JSON Schema tooltips for documentation on checks.
+
+## Limitations
+
+* it doesn't see violations in your project files until you open them
+* CodeSimilarity check uses a ringbuffer to limit the number of files in similarity cache (configure via `haxecheckstyle.codeSimilarityBufferSize` - defaults to 100)
 
 ## TODO
 
