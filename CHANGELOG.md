@@ -1,4 +1,4 @@
-### 1.6.0 (December xx, 2019)
+### 1.6.0 (December 19, 2019)
 
 - updated haxe-checkstyle to 2.6.1
 - added code actions for `Final` and `ModifierOrder` checks
