@@ -1,3 +1,7 @@
+### 1.6.1 (December 27, 2019)
+
+- removed unnecessary debug output to the dev console
+
 ### 1.6.0 (December 19, 2019)
 
 - updated haxe-checkstyle to 2.6.1
