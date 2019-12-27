@@ -11,6 +11,8 @@ import vscode.Range;
 import vscode.TextDocument;
 import vscode.WorkspaceEdit;
 
+using StringTools;
+
 class CheckstyleCodeActions {
 	public function new() {}
 
@@ -65,7 +67,7 @@ class CheckstyleCodeActions {
 	}
 
 	function makeDynamicAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
-		var replace = StringTools.replace(document.getText(diag.range), "Dynamic", "Any");
+		var replace = document.getText(diag.range).replace("Dynamic", "Any");
 		replaceAction(actions, "Replace with Any", document, diag.range, diag, replace);
 	}
 
@@ -105,9 +107,8 @@ class CheckstyleCodeActions {
 		if (!reg.match(message)) {
 			return;
 		}
-		var replace = reg.matched(1);
-		replace = StringTools.replace(replace, "\\t", "\t");
-		replaceAction(actions, "Fix indentation", document, diag.range, diag, replace);
+		var replacement = reg.matched(1).replace("\\t", "\t");
+		replaceAction(actions, "Fix indentation", document, diag.range, diag, replacement);
 	}
 
 	function makeModifierOrderAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {

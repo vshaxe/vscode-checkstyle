@@ -8,6 +8,8 @@ import vscode.DiagnosticCollection;
 import vscode.ExtensionContext;
 import vscode.TextDocument;
 
+using StringTools;
+
 class Main {
 	static inline var MAIN_CONFIG_KEY = "haxecheckstyle";
 	static inline var CONFIG_OPTION = "configurationFile";
@@ -153,7 +155,7 @@ class Main {
 		}
 		for (i in 0...Vscode.workspace.workspaceFolders.length) {
 			var workspaceFolder = Vscode.workspace.workspaceFolders[i];
-			if (StringTools.startsWith(fileName, workspaceFolder.uri.fsPath)) {
+			if (fileName.startsWith(workspaceFolder.uri.fsPath)) {
 				return workspaceFolder.uri.fsPath;
 			}
 		}
@@ -167,7 +169,7 @@ class Main {
 			return null;
 		}
 		for (folder in folders) {
-			if (StringTools.startsWith(fileName, folder)) {
+			if (fileName.startsWith(folder)) {
 				return folder;
 			}
 		}
@@ -192,7 +194,7 @@ class Main {
 		fileName = normalizePath(fileName);
 		for (path in paths) {
 			var rootPath = normalizePath(Path.join([rootFolder, path]));
-			if (StringTools.startsWith(fileName, rootPath)) {
+			if (fileName.startsWith(rootPath)) {
 				return true;
 			}
 		}
