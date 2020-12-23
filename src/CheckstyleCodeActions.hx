@@ -37,6 +37,10 @@ class CheckstyleCodeActions {
 		return commands;
 	}
 
+	public function resolveCodeAction(codeAction:CodeAction, token:CancellationToken):ProviderResult<CodeAction> {
+		return codeAction;
+	}
+
 	function makeCheckAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic) {
 		var index = diag.message.indexOf(" - ");
 		if (index <= 0) {

@@ -48,7 +48,7 @@ class Main {
 			return;
 		}
 
-		tokentree.TokenStream.MODE = RELAXED;
+		tokentree.TokenStream.MODE = Relaxed;
 		var checker = new checkstyle.Main();
 		checker.configParser.validateMode = ConfigValidateMode.RELAXED;
 		addSourcePaths(checker.configParser);
