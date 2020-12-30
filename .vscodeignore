@@ -4,5 +4,9 @@ bin/main.js.map
 src/**
 .editorconfig
 .gitignore
-.travis.yml
-build.hxml
+*.hxml
+haxe_libraries
+.haxerc
+.github
+hxformat.json
+checkstyle.json

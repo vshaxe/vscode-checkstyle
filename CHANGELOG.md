@@ -1,3 +1,5 @@
+### 1.7.0 (December 30, 2020)
+
 - updated haxe-checkstyle to 2.7.0
 
 ### 1.6.1 (December 27, 2019)
