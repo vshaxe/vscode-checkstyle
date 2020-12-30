@@ -26,7 +26,7 @@
         }
     ],
     "devDependencies": {
-        "lix": "^15.8.9"
+        "lix": "^15.10.1"
     },
     "icon": "logo.png",
     "keywords": [
