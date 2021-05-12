@@ -1,3 +1,4 @@
+import haxe.Exception;
 import haxe.io.Path;
 import checkstyle.checks.coding.CodeSimilarityCheck;
 import checkstyle.config.Config;
@@ -70,6 +71,7 @@ class Main {
 
 		var file:Array<checkstyle.CheckFile> = [{name: fileName, content: null, index: 0}];
 		var reporter = new VSCodeReporter(1, checker.configParser.getCheckCount(), checker.checker.checks.length, null, false);
+		reporter.fileNameFilter = fileName;
 		ReporterManager.INSTANCE.clear();
 		ReporterManager.INSTANCE.addReporter(reporter);
 
@@ -94,11 +96,11 @@ class Main {
 				if (sys.FileSystem.exists(excludeConfig)) {
 					checker.configParser.loadExcludeConfig(excludeConfig);
 				}
-			} catch (e:Dynamic) {
+			} catch (e:Exception) {
 				// tolerate failures for exclude config
 			}
 			return;
-		} catch (e:Dynamic) {
+		} catch (e:Exception) {
 			checker.configPath = null;
 		}
 		loadConfigFromSettings(checker, rootFolder);
@@ -118,7 +120,7 @@ class Main {
 				}
 				checker.configParser.loadConfig(checker.configPath);
 				return;
-			} catch (e:Dynamic) {
+			} catch (e:Exception) {
 				checker.configPath = null;
 			}
 		}
@@ -144,7 +146,7 @@ class Main {
 		var config:Config = CompileTime.parseJsonFile("resources/default-checkstyle.json");
 		try {
 			checker.configParser.parseAndValidateConfig(config, rootFolder);
-		} catch (e:Dynamic) {
+		} catch (e:Exception) {
 			checker.configParser.addAllChecks();
 		}
 	}
