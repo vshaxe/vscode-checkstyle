@@ -49,6 +49,8 @@ class CheckstyleCodeActions {
 		var checkName:CheckNames = diag.message.substr(0, index);
 		var message = diag.message.substr(index + 3);
 		switch (checkName) {
+			case CommentedOutCode:
+				makeCommentedOutCodeAction(document, actions, diag, message);
 			case DynamicCheck:
 				makeDynamicAction(document, actions, diag, message);
 			case EmptyPackageCheck:
@@ -68,6 +70,10 @@ class CheckstyleCodeActions {
 			case UnusedImportCheck:
 				makeUnusedImportAction(document, actions, diag, message);
 		}
+	}
+
+	function makeCommentedOutCodeAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
+		deleteAction(actions, "Remove commented out code", document, diag.range, diag);
 	}
 
 	function makeDynamicAction(document:TextDocument, actions:Map<String, CodeAction>, diag:Diagnostic, message:String) {
@@ -229,6 +235,7 @@ class CheckstyleCodeActions {
 }
 
 enum abstract CheckNames(String) from String {
+	var CommentedOutCode = "CommentedOutCode";
 	var DynamicCheck = "Dynamic";
 	var EmptyPackageCheck = "EmptyPackage";
 	var FinalCheck = "Final";

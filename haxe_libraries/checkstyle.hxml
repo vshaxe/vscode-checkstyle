@@ -1,3 +1,4 @@
-# @install: lix --silent download "gh://github.com/HaxeCheckstyle/haxe-checkstyle#773bf049b9bd483516bf587088860b3510e9a64a" into checkstyle/2.7.0/github/773bf049b9bd483516bf587088860b3510e9a64a
--cp ${HAXE_LIBCACHE}/checkstyle/2.7.0/github/773bf049b9bd483516bf587088860b3510e9a64a/src
--D checkstyle=2.7.0
+# @install: lix --silent download "haxelib:/checkstyle#2.8.0" into checkstyle/2.8.0/haxelib
+# @run: haxelib run-dir checkstyle "${HAXE_LIBCACHE}/checkstyle/2.8.0/haxelib"
+-cp ${HAXE_LIBCACHE}/checkstyle/2.8.0/haxelib/src
+-D checkstyle=2.8.0

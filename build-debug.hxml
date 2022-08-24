@@ -1,4 +1,4 @@
--lib jstack
--D JSTACK_MAIN=Main.main
+# -lib jstack
+# -D JSTACK_MAIN=Main.main
 -debug
 build.hxml

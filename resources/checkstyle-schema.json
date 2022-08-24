@@ -335,7 +335,9 @@
                                     "MACRO",
                                     "DYNAMIC",
                                     "EXTERN",
-                                    "FINAL"
+                                    "FINAL",
+                                    "ABSTRACT",
+                                    "OVERLOAD"
                                 ]
                             },
                             "type": "array",
@@ -1746,43 +1748,6 @@
             },
             "type": "object"
         },
-        "EnforceVarTypeHintCheck": {
-            "description": "Checks if all variables have type hint.",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "description": "Checks if all variables have type hint.",
-                    "type": "string",
-                    "enum": [
-                        "EnforceVarTypeHint"
-                    ]
-                },
-                "props": {
-                    "description": "Checks if all variables have type hint.",
-                    "additionalProperties": false,
-                    "properties": {
-                        "ignoreEnumAbstractValues": {
-                            "description": "ignores fields inside abstract enums",
-                            "type": "boolean",
-                            "propertyOrder": 0
-                        },
-                        "severity": {
-                            "description": "sets gravity of reported violations:\n\t- IGNORE = do not report violations, violations do not appear anywhere in output\n\t- INFO = all violations have info / lowest priority\n\t- WARNING = all violations have warning / medium priority\n\t- ERROR = all violations have error / highest priority",
-                            "type": "string",
-                            "enum": [
-                                "INFO",
-                                "WARNING",
-                                "ERROR",
-                                "IGNORE"
-                            ],
-                            "propertyOrder": 1
-                        }
-                    },
-                    "type": "object"
-                }
-            },
-            "type": "object"
-        },
         "SimplifyBooleanReturnCheck": {
             "description": "Checks for over-complicated boolean return statements.",
             "additionalProperties": false,
@@ -2234,6 +2199,38 @@
                                 "IGNORE"
                             ],
                             "propertyOrder": 1
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+        "CommentedOutCodeCheck": {
+            "description": "Checks sections of commented out code",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "description": "Checks sections of commented out code",
+                    "type": "string",
+                    "enum": [
+                        "CommentedOutCode"
+                    ]
+                },
+                "props": {
+                    "description": "Checks sections of commented out code",
+                    "additionalProperties": false,
+                    "properties": {
+                        "severity": {
+                            "description": "sets gravity of reported violations:\n\t- IGNORE = do not report violations, violations do not appear anywhere in output\n\t- INFO = all violations have info / lowest priority\n\t- WARNING = all violations have warning / medium priority\n\t- ERROR = all violations have error / highest priority",
+                            "type": "string",
+                            "enum": [
+                                "INFO",
+                                "WARNING",
+                                "ERROR",
+                                "IGNORE"
+                            ],
+                            "propertyOrder": 0
                         }
                     },
                     "type": "object"
@@ -3025,7 +3022,7 @@
                 },
                 "Dynamic": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 19
+                    "propertyOrder": 20
                 },
                 "Final": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3034,10 +3031,6 @@
                 "MultipleStringLiterals": {
                     "$ref": "#/definitions/ExcludeFilterList",
                     "propertyOrder": 45
-                },
-                "EnforceVarTypeHint": {
-                    "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 24
                 },
                 "NeedBraces": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3080,7 +3073,7 @@
                 },
                 "EmptyBlock": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 21
+                    "propertyOrder": 22
                 },
                 "ExtendedEmptyLines": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3092,7 +3085,7 @@
                 },
                 "DefaultComesLast": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 17
+                    "propertyOrder": 18
                 },
                 "HexadecimalLiteral": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3100,15 +3093,15 @@
                 },
                 "WhitespaceAfter": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 81
+                    "propertyOrder": 82
                 },
                 "ConstantName": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 15
+                    "propertyOrder": 16
                 },
                 "EmptyPackage": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 23
+                    "propertyOrder": 24
                 },
                 "Interface": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3116,7 +3109,7 @@
                 },
                 "WhitespaceAround": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 82
+                    "propertyOrder": 83
                 },
                 "NestedIfDepth": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3204,11 +3197,11 @@
                 },
                 "ConditionalCompilation": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 14
+                    "propertyOrder": 15
                 },
                 "EmptyLines": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 22
+                    "propertyOrder": 23
                 },
                 "MemberName": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3216,7 +3209,7 @@
                 },
                 "ERegLiteral": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 20
+                    "propertyOrder": 21
                 },
                 "RedundantModifier": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3234,6 +3227,10 @@
                     "$ref": "#/definitions/ExcludeFilterList",
                     "propertyOrder": 31
                 },
+                "CommentedOutCode": {
+                    "$ref": "#/definitions/ExcludeFilterList",
+                    "propertyOrder": 14
+                },
                 "version": {
                     "maximum": 1,
                     "type": "integer",
@@ -3250,6 +3247,10 @@
                 "TODOComment": {
                     "$ref": "#/definitions/ExcludeFilterList",
                     "propertyOrder": 70
+                },
+                "VarTypeHint": {
+                    "$ref": "#/definitions/ExcludeFilterList",
+                    "propertyOrder": 80
                 },
                 "NestedControlFlow": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3281,7 +3282,7 @@
                 },
                 "VariableInitialisation": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 80
+                    "propertyOrder": 81
                 },
                 "LineLength": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3297,7 +3298,7 @@
                 },
                 "CyclomaticComplexity": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 16
+                    "propertyOrder": 17
                 },
                 "StringLiteral": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3317,7 +3318,7 @@
                 },
                 "DocCommentStyle": {
                     "$ref": "#/definitions/ExcludeFilterList",
-                    "propertyOrder": 18
+                    "propertyOrder": 19
                 },
                 "InnerAssignment": {
                     "$ref": "#/definitions/ExcludeFilterList",
@@ -3463,6 +3464,53 @@
                                 "IGNORE"
                             ],
                             "propertyOrder": 0
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+        "VarTypeHintCheck": {
+            "description": "Checks type hints of variables.",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "description": "Checks type hints of variables.",
+                    "type": "string",
+                    "enum": [
+                        "VarTypeHint"
+                    ]
+                },
+                "props": {
+                    "description": "Checks type hints of variables.",
+                    "additionalProperties": false,
+                    "properties": {
+                        "ignoreEnumAbstractValues": {
+                            "description": "ignores fields inside abstract enums",
+                            "type": "boolean",
+                            "propertyOrder": 1
+                        },
+                        "typeHintPolicy": {
+                            "description": "policy for type hints on var and final",
+                            "type": "string",
+                            "enum": [
+                                "enforce_all",
+                                "infer_new_or_const",
+                                "infer_all"
+                            ],
+                            "propertyOrder": 0
+                        },
+                        "severity": {
+                            "description": "sets gravity of reported violations:\n\t- IGNORE = do not report violations, violations do not appear anywhere in output\n\t- INFO = all violations have info / lowest priority\n\t- WARNING = all violations have warning / medium priority\n\t- ERROR = all violations have error / highest priority",
+                            "type": "string",
+                            "enum": [
+                                "INFO",
+                                "WARNING",
+                                "ERROR",
+                                "IGNORE"
+                            ],
+                            "propertyOrder": 2
                         }
                     },
                     "type": "object"
@@ -3900,6 +3948,11 @@
                     "description": "Checks for instance variables that are initialised at class level.",
                     "additionalProperties": false,
                     "properties": {
+                        "allowFinal": {
+                            "description": "final fields must be initialised either immediately or in constructor\n\t\twhen allowFinal is true then VariableInitialisation won't complain about initialisation at class level for final fields",
+                            "type": "boolean",
+                            "propertyOrder": 0
+                        },
                         "severity": {
                             "description": "sets gravity of reported violations:\n\t- IGNORE = do not report violations, violations do not appear anywhere in output\n\t- INFO = all violations have info / lowest priority\n\t- WARNING = all violations have warning / medium priority\n\t- ERROR = all violations have error / highest priority",
                             "type": "string",
@@ -3909,7 +3962,7 @@
                                 "ERROR",
                                 "IGNORE"
                             ],
-                            "propertyOrder": 0
+                            "propertyOrder": 1
                         }
                     },
                     "type": "object"
@@ -4258,6 +4311,9 @@
                                 "$ref": "#/definitions/CodeSimilarityCheck"
                             },
                             {
+                                "$ref": "#/definitions/CommentedOutCodeCheck"
+                            },
+                            {
                                 "$ref": "#/definitions/ConditionalCompilationCheck"
                             },
                             {
@@ -4286,9 +4342,6 @@
                             },
                             {
                                 "$ref": "#/definitions/EmptyPackageCheck"
-                            },
-                            {
-                                "$ref": "#/definitions/EnforceVarTypeHintCheck"
                             },
                             {
                                 "$ref": "#/definitions/ExtendedEmptyLinesCheck"
@@ -4454,6 +4507,9 @@
                             },
                             {
                                 "$ref": "#/definitions/UnusedLocalVarCheck"
+                            },
+                            {
+                                "$ref": "#/definitions/VarTypeHintCheck"
                             },
                             {
                                 "$ref": "#/definitions/VariableInitialisationCheck"

@@ -16,6 +16,9 @@
             "type": "CodeSimilarity"
         },
         {
+            "type": "CommentedOutCode"
+        },
+        {
             "props": {
                 "severity": "INFO"
             },

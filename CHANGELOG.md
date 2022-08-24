@@ -1,3 +1,10 @@
+
+### 1.8.0 (August 24, 2022)
+
+- added code action for CommentedOutCode
+- fixed compatibility issue with latest vshaxe [#18](https://github.com/vshaxe/vscode-checkstyle/issues/18)
+- updated haxe-checkstyle to 2.8.0
+
 ### 1.7.0 (December 30, 2020)
 
 - updated haxe-checkstyle to 2.7.0
