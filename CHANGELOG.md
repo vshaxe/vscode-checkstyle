@@ -1,3 +1,6 @@
+### 1.8.1 (September 7, 2022)
+
+- updated haxeparser, tokentree and checkstyle libs to support inline markup
 
 ### 1.8.0 (August 24, 2022)
 
