@@ -1,7 +1,9 @@
 import checkstyle.Message;
+import checkstyle.SeverityLevel;
 import checkstyle.reporter.BaseReporter;
 import vscode.Diagnostic;
 import vscode.DiagnosticRelatedInformation;
+import vscode.DiagnosticSeverity;
 import vscode.Location;
 import vscode.Range;
 
@@ -16,7 +18,7 @@ class VSCodeReporter extends BaseReporter {
 
 	override public function addMessage(m:Message) {
 		var range = new Range(m.range.start.line - 1, m.range.start.column, m.range.end.line - 1, m.range.end.column);
-		var diag = new Diagnostic(range, m.moduleName + " - " + m.message, Information);
+		var diag = new Diagnostic(range, m.moduleName + " - " + m.message, convertSeverity(m.severity));
 		diag.source = "checkstyle";
 		diag.code = m.code;
 		diag.relatedInformation = [];
@@ -34,6 +36,19 @@ class VSCodeReporter extends BaseReporter {
 
 		if (filterMatched) {
 			diagnostics.push(diag);
+		}
+	}
+
+	function convertSeverity(severity:SeverityLevel):DiagnosticSeverity {
+		return switch (severity) {
+			case INFO:
+				Information;
+			case WARNING:
+				Warning;
+			case ERROR:
+				Error;
+			case IGNORE:
+				Hint;
 		}
 	}
 }
