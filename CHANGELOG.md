@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.8.3 (February 15, 2023)
+
+- updated tokentree and checkstyle libs
+
 ## 1.8.2 (November 4, 2022)
 
 - fixed severity levels of diagnostics not matching checkstyle severity [#20](https://github.com/vshaxe/vscode-checkstyle/issues/20)
