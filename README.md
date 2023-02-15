@@ -1,6 +1,8 @@
 # Haxe Checkstyle for Visual Studio Code
 
-[![CI](https://img.shields.io/github/workflow/status/vshaxe/vscode-checkstyle/CI.svg?logo=github)](https://github.com/vshaxe/vscode-checkstyle/actions?query=workflow%3ACI) [![Version](https://vsmarketplacebadge.apphb.com/version-short/vshaxe.haxe-checkstyle.svg)](https://marketplace.visualstudio.com/items?itemName=vshaxe.haxe-checkstyle) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/vshaxe.haxe-checkstyle.svg)](https://marketplace.visualstudio.com/items?itemName=vshaxe.haxe-checkstyle)
+[![CI](https://img.shields.io/github/actions/workflow/status/vshaxe/vscode-checkstyle/main.yml)](https://github.com/vshaxe/vscode-checkstyle/actions?query=workflow%3ACI)
+[![Version](https://img.shields.io/github/package-json/v/HaxeCheckstyle/haxe-checkstyle/dev)](https://marketplace.visualstudio.com/items?itemName=vshaxe.haxe-checkstyle)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/vshaxe.haxe-checkstyle)](https://marketplace.visualstudio.com/items?itemName=vshaxe.haxe-checkstyle)
 
 ## Features
 
